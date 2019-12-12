@@ -16,7 +16,7 @@ public class SkillView {
         System.out.println(MENU_ITEM_2);
         System.out.println(MENU_ITEM_3);
         SkillController skillController = new SkillController();
-        skillController.menuOfSkills();
+        System.out.println(skillController.menuOfSkills());
 
 
     }

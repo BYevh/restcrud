@@ -15,26 +15,27 @@ public class SkillController {
     private SkillRepository skillRepository = new SkillRepository();
 
     public TreeSet<Skill> menuOfSkills() throws IOException {
-        TreeSet<Skill> setOfSkills = new TreeSet<Skill>();
+        TreeSet<Skill> setOfSkills = skillRepository.getAllSkills();
 
         //пока без проверки на валидность
         int item;
         do {
             item = Integer.parseInt(inputData());
             switch (item) {
-                case 1: {                       //1. Show all skills.
-                    setOfSkills = skillRepository.getAllSkills();
+                case 1: {                                           //1. Show all skills.
+                    System.out.println(setOfSkills);
                     break;
                 }
-                case 2: {                       //2. Add new skill.
+                case 2: {                                           //2. Add new skill.
                     System.out.println(INPUT_ID);
                     Long id = Long.parseLong(inputData());
                     System.out.println(INPUT_SKILL);
                     String skill = inputData();
                     setOfSkills = skillRepository.updateSkills(id, skill);
+                    System.out.println(setOfSkills);
                     break;
                 }
-                case 3: {                       //2. Exit
+                case 3: {                                           //3. Exit
                     break;
                 }
             }
@@ -43,7 +44,7 @@ public class SkillController {
         return setOfSkills;
     }
 
-    protected String inputData() throws IOException {
+    private String inputData() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String s = null;
         try {

@@ -12,7 +12,7 @@ public class SkillRepository {
     public SkillRepository(){
     }
 
-    //delete / update - not safe, only if all developers do not have this skill
+    //(delete / update) - not safe, only if all developers do not have this skill
 
     //read
     public TreeSet<Skill> getAllSkills() throws IOException {
@@ -23,13 +23,13 @@ public class SkillRepository {
     public TreeSet<Skill> updateSkills(Long id, String nameSkill) throws IOException {
         TreeSet<Skill> setOfSkills = readAllFile();
 
-        //если есть скил, то выходим возвращая существующий сет скилов
+        //if there is a skill, then exit returning the existing set of skills
         for (Skill skill : setOfSkills) {
             if (skill.getNameOfSkill().equals(nameSkill) | skill.getId().equals(id)) {
                 return setOfSkills;
             }
         }
-        // если нет, то добавляем
+        // if not, add a skill
         setOfSkills.add(new Skill(id, nameSkill));
 
         writeAllFile(setOfSkills);

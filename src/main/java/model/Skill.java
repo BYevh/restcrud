@@ -31,9 +31,9 @@ public class Skill implements Comparable<Skill> {
 
     @Override
     public String toString() {
-        return "Skill{" +
+        return "\nSkill { " +
                 "id=" + id +
                 ", nameOfSkill='" + nameOfSkill + '\'' +
-                '}';
+                "}";
     }
 }
