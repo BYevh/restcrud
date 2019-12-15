@@ -6,7 +6,7 @@ import repository.SkillRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.TreeSet;
+import java.util.ArrayList;
 
 public class SkillController {
     private final String INPUT_ID = "Input new ID:";
@@ -14,8 +14,8 @@ public class SkillController {
 
     private SkillRepository skillRepository = new SkillRepository();
 
-    public TreeSet<Skill> menuOfSkills() throws IOException {
-        TreeSet<Skill> setOfSkills = skillRepository.getAllSkills();
+    public ArrayList<Skill> menuOfSkills() throws IOException {
+        ArrayList<Skill> listOfSkills = skillRepository.getAll();
 
         //пока без проверки на валидность
         int item;
@@ -23,7 +23,7 @@ public class SkillController {
             item = Integer.parseInt(inputData());
             switch (item) {
                 case 1: {                                           //1. Show all skills.
-                    System.out.println(setOfSkills);
+                    System.out.println(listOfSkills);
                     break;
                 }
                 case 2: {                                           //2. Add new skill.
@@ -31,8 +31,8 @@ public class SkillController {
                     Long id = Long.parseLong(inputData());
                     System.out.println(INPUT_SKILL);
                     String skill = inputData();
-                    setOfSkills = skillRepository.updateSkills(id, skill);
-                    System.out.println(setOfSkills);
+                    listOfSkills = skillRepository.create(new Skill (id, skill));
+                    System.out.println(listOfSkills);
                     break;
                 }
                 case 3: {                                           //3. Exit
@@ -41,7 +41,7 @@ public class SkillController {
             }
         } while (item != 3);
 
-        return setOfSkills;
+        return listOfSkills;
     }
 
     private String inputData() {

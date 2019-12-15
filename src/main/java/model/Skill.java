@@ -1,12 +1,12 @@
 package model;
 
-public class Skill implements Comparable<Skill> {
+public class Skill {
     private Long id;
-    private String nameOfSkill;
+    private String name;
 
-    public Skill(Long id, String nameOfSkill) {
+    public Skill(Long id, String name) {
         this.id = id;
-        this.nameOfSkill = nameOfSkill;
+        this.name = name;
     }
 
     public Long getId() {
@@ -17,23 +17,19 @@ public class Skill implements Comparable<Skill> {
         this.id = id;
     }
 
-    public String getNameOfSkill() {
-        return nameOfSkill;
+    public String getName() {
+        return name;
     }
 
-    public void setNameOfSkill(String nameOfSkill) {
-        this.nameOfSkill = nameOfSkill;
-    }
-
-    public int compareTo(Skill o) {
-        return id.compareTo(o.getId());
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "\nSkill { " +
                 "id=" + id +
-                ", nameOfSkill='" + nameOfSkill + '\'' +
+                ", name = '" + name + '\'' +
                 "}";
     }
 }
