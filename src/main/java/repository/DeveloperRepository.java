@@ -3,6 +3,7 @@ package repository;
 import model.Developer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeveloperRepository implements GenericRepository<Developer> {
@@ -11,7 +12,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return null;
     }
 
-    public List<Developer> getAll() throws IOException {
+    public ArrayList<Developer> getAll() throws IOException {
         return null;
     }
 
@@ -19,7 +20,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return null;
     }
 
-    public void delete(Developer developer) {
+    public void delete(Long id) {
 
     }
 

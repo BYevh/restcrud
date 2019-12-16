@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillRepository implements GenericRepository<Skill> {
-    private String fileName = "\\src\\resources\\skills.txt";
+    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\skills.txt";
     private UtilsFileProcessor utilsFileProcessor = new UtilsFileProcessor(fileName);
 
     public Skill getById(Long id) throws IOException {
