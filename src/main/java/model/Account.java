@@ -1,6 +1,18 @@
 package model;
 
 public class Account {
+    public Account(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
 
-    private Long id;
+    private AccountStatus accountStatus;
+
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
 }

@@ -10,6 +10,7 @@ public class SkillRepository implements GenericRepository<Skill> {
     private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\skills.txt";
     private UtilsFileProcessor utilsFileProcessor = new UtilsFileProcessor(fileName);
 
+    @Override
     public Skill getById(Long id) throws IOException {
         ArrayList<Skill> listOfSkills = getAll();
         for (Skill skill : listOfSkills) {
@@ -21,6 +22,7 @@ public class SkillRepository implements GenericRepository<Skill> {
     }
 
     //read
+    @Override
     public ArrayList<Skill> getAll() throws IOException {
         ArrayList<Skill> skills = new ArrayList<Skill>();
         ArrayList<String> stringOfSkills = utilsFileProcessor.readAllFile();
@@ -31,6 +33,7 @@ public class SkillRepository implements GenericRepository<Skill> {
     }
 
     //create
+    @Override
     public ArrayList<Skill> create(Skill newSkill) throws IOException {
         ArrayList<Skill> listOfSkills = getAll();
         ArrayList<String> stringOfSkills = new ArrayList<String>();
@@ -43,7 +46,6 @@ public class SkillRepository implements GenericRepository<Skill> {
         }
         // if not, add a skill
         listOfSkills.add(newSkill);
-
         for (Skill s : listOfSkills) {
             stringOfSkills.add(skillToString(s));
         }
@@ -53,12 +55,15 @@ public class SkillRepository implements GenericRepository<Skill> {
     }
 
     //(delete / update) - not safe, only if all developers do not have this skill
-    public void delete(Skill skill) {
+    @Override
+    public void delete(Long id) {
     }
 
+    @Override
     public List<Skill> update(Skill skill) {
         return null;
     }
+
 
     private Skill stringToSkill(String s) {
         String[] oneSkill = s.split("\\s");

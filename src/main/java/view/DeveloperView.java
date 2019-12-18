@@ -9,7 +9,7 @@ public class DeveloperView {
     private final String MENU_ITEM_1 = "1. Show all developers.";
     private final String MENU_ITEM_2 = "2. Show developer by ID";
     private final String MENU_ITEM_3 = "3. Add new developer.";
-    private final String MENU_ITEM_4 = "4. Update developer.";
+    private final String MENU_ITEM_4 = "4. Update a developer.";
     private final String MENU_ITEM_5 = "5. Delete a developer.";
     private final String MENU_ITEM_6 = "6. Exit.";
 
