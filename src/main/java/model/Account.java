@@ -15,4 +15,9 @@ public class Account {
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
     }
+
+    @Override
+    public String toString() {
+        return "accountStatus=" + accountStatus;
+    }
 }

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillRepository implements GenericRepository<Skill> {
-    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\skills.txt";
-    private UtilsFileProcessor utilsFileProcessor = new UtilsFileProcessor(fileName);
+    private String fileName = "\\resources\\skills.txt";
+    private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     @Override
     public Skill getById(Long id) throws IOException {
@@ -25,7 +25,7 @@ public class SkillRepository implements GenericRepository<Skill> {
     @Override
     public ArrayList<Skill> getAll() throws IOException {
         ArrayList<Skill> skills = new ArrayList<Skill>();
-        ArrayList<String> stringOfSkills = utilsFileProcessor.readAllFile();
+        ArrayList<String> stringOfSkills = utilsRepository.readAllFile();
         for (String s : stringOfSkills) {
             skills.add(stringToSkill(s));
         }
@@ -50,7 +50,7 @@ public class SkillRepository implements GenericRepository<Skill> {
             stringOfSkills.add(skillToString(s));
         }
 
-        utilsFileProcessor.writeAllFile(stringOfSkills);
+        utilsRepository.writeAllFile(stringOfSkills);
         return getAll();
     }
 

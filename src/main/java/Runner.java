@@ -9,6 +9,6 @@ import java.io.IOException;
 public class Runner {
     public static void main(String[] args) throws IOException {
 //       SkillView skillView = new SkillView();
-        DeveloperView developerView = new DeveloperView();
+       DeveloperView developerView = new DeveloperView();
     }
 }

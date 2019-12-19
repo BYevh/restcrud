@@ -1,19 +1,17 @@
 package model;
 
-import model.Skill;
-
-import java.util.Set;
+import java.util.HashSet;
 
 public class Developer {
      private Long id;
      private String name;
-     private Set<Skill> skill;
+     private HashSet<Skill> skills;
      private Account account;
 
-     public Developer(Long id, String name, Set<Skill> skill, Account account) {
+     public Developer(Long id, String name, HashSet<Skill> skills, Account account) {
           this.id = id;
           this.name = name;
-          this.skill = skill;
+          this.skills = skills;
           this.account = account;
      }
 
@@ -33,12 +31,12 @@ public class Developer {
           this.name = name;
      }
 
-     public Set<Skill> getSkill() {
-          return skill;
+     public HashSet<Skill> getSkills() {
+          return skills;
      }
 
-     public void setSkill(Set<Skill> skill) {
-          this.skill = skill;
+     public void setSkills(HashSet<Skill> skill) {
+          this.skills = skill;
      }
 
      public Account getAccount() {
@@ -51,11 +49,11 @@ public class Developer {
 
      @Override
      public String toString() {
-          return "Developer{" +
+          return "\nDeveloper{" +
                   "id=" + id +
-                  ", name='" + name + '\'' +
-                  ", skill=" + skill.toString() +
-                  ", account=" + account +
+                  ", \nname='" + name + '\'' +
+                  ", \nskill=" + skills.toString() +
+                  ", \naccount=" + account +
                   '}';
      }
 }

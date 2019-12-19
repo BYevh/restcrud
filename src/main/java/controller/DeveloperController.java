@@ -7,6 +7,7 @@ import repository.DeveloperRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -51,10 +52,10 @@ public class DeveloperController {
                     String name = utilsController.inputData();
 
                     System.out.println(INPUT_SKILLS);
-                    Set<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
+                    HashSet<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = utilsController.createAccount(Integer.parseInt(utilsController.inputData()));
+                    Account account = utilsController.createAccount(Long.parseLong(utilsController.inputData()));
 
                     developerRepository.create(new Developer(id, name, setOfSkillsThisDeveloper, account));
 
@@ -72,10 +73,10 @@ public class DeveloperController {
                     String name = utilsController.inputData();
 
                     System.out.println(INPUT_SKILLS);
-                    Set<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
+                    HashSet<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = utilsController.createAccount(Integer.parseInt(utilsController.inputData()));
+                    Account account = utilsController.createAccount(Long.parseLong(utilsController.inputData()));
 
                     developerRepository.update(new Developer(id, name, setOfSkillsThisDeveloper, account));
 

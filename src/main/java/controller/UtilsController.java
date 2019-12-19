@@ -25,23 +25,13 @@ public class UtilsController {
         return s;
     }
 
-    public Account createAccount(Integer id) {
-        Account account;
-        switch (id) {
-            case 1: {
-                account = new Account(AccountStatus.ACTIVE);
-                break;
+    public Account createAccount(Long id) {
+
+        Account account = null;
+        for (AccountStatus status: AccountStatus.values()) {
+            if (status.getId().equals(id)) {
+                account = new Account(status);
             }
-            case 2: {
-                account = new Account(AccountStatus.BANNED);
-                break;
-            }
-            case 3: {
-                account = new Account(AccountStatus.DELETED);
-                break;
-            }
-            default:
-                throw new IllegalStateException("Unexpected value: " + id);
         }
         return account;
     }

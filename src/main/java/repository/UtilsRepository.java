@@ -5,10 +5,10 @@ import model.Skill;
 import java.io.*;
 import java.util.ArrayList;
 
-class UtilsFileProcessor {
+class UtilsRepository {
     private String fileName;
 
-    UtilsFileProcessor(String fileName) {
+    UtilsRepository(String fileName) {
         this.fileName = fileName;
     }
 
