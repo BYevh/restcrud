@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class DeveloperRepository implements GenericRepository<Developer> {
-    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\developers.txt";
+    private String fileName = "\\consolecrude\\src\\resources\\developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     public Developer getById(Long id) throws IOException {
