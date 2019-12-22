@@ -1,11 +1,12 @@
 package model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Developer {
      private Long id;
      private String name;
-     private HashSet<Skill> skills;
+     private Set<Skill> skills;
      private Account account;
 
      public Developer(Long id, String name, HashSet<Skill> skills, Account account) {
@@ -31,7 +32,7 @@ public class Developer {
           this.name = name;
      }
 
-     public HashSet<Skill> getSkills() {
+     public Set<Skill> getSkills() {
           return skills;
      }
 

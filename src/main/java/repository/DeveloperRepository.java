@@ -2,19 +2,16 @@ package repository;
 
 import controller.UtilsController;
 import model.Account;
+import model.AccountStatus;
 import model.Developer;
 import model.Skill;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class DeveloperRepository implements GenericRepository<Developer> {
-    private String fileName = "\\resources\\developers.txt";
+    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
-    private UtilsController utilsController = new UtilsController();
 
     public Developer getById(Long id) throws IOException {
         ArrayList<Developer> developers = getAll();
@@ -50,7 +47,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         ArrayList<Developer> developers = getAll();
         Developer developerForDelete = null;
         for (Developer developer : developers) {
-            if (developer.getId().equals(id)){
+            if (developer.getId().equals(id)) {
                 developerForDelete = developer;
             }
         }
@@ -78,10 +75,10 @@ public class DeveloperRepository implements GenericRepository<Developer> {
             joinerSkills.add(arrayOfOwnDeveloper[i]);
         }
         String joinedSkills = joinerSkills.toString();
-        HashSet<Skill> setOfSkills = utilsController.createSetOfSkill(joinedSkills);
+        HashSet<Skill> setOfSkills = createSetOfSkill(joinedSkills);
         //
 
-        Account account = utilsController.createAccount(Long.parseLong(arrayOfOwnDeveloper[arrayOfOwnDeveloper.length - 1]));
+        Account account = createAccount(Long.parseLong(arrayOfOwnDeveloper[arrayOfOwnDeveloper.length - 1]));
         return new Developer(id, name, setOfSkills, account);
     }
 
@@ -90,7 +87,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         String name = developer.getName();
 
         //get lineStrings of skills from setOfSkills
-        HashSet<Skill> setOfSkills = developer.getSkills();
+        Set<Skill> setOfSkills = developer.getSkills();
         StringJoiner joinerSkills = new StringJoiner(" ");
         for (Skill skill : setOfSkills) {
             joinerSkills.add(String.valueOf(skill.getId()));
@@ -98,9 +95,34 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         String joinedSkills = joinerSkills.toString();
         //
 
-        String account = String.valueOf(developer.getAccount().getAccountStatus().getId() + "\n");
+        String account = developer.getAccount().getAccountStatus().getId() + "\n";
 
         return String.join(" ", id, name, joinedSkills, account);
+    }
+
+    public Account createAccount(Long id) {
+
+        Account account = null;
+        for (AccountStatus status : AccountStatus.values()) {
+            if (status.getId().equals(id)) {
+                account = new Account(status);
+            }
+        }
+        return account;
+    }
+
+    public HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
+        long[] numberOfSkill = Arrays.stream(lineOfSkills.split("\\s")).mapToLong(Long::parseLong).toArray();
+        ArrayList<Skill> allSkills = new SkillRepository().getAll();
+        HashSet<Skill> setOfSkills = new HashSet<>();
+        for (long i : numberOfSkill) {
+            for (Skill skills : allSkills) {
+                if (skills.getId().equals(i)) {
+                    setOfSkills.add(skills);
+                }
+            }
+        }
+        return setOfSkills;
     }
 
 }

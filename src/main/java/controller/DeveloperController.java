@@ -1,14 +1,16 @@
 package controller;
 
 import model.Account;
+import model.AccountStatus;
 import model.Developer;
 import model.Skill;
 import repository.DeveloperRepository;
+import repository.SkillRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
 
 public class DeveloperController {
@@ -52,10 +54,10 @@ public class DeveloperController {
                     String name = utilsController.inputData();
 
                     System.out.println(INPUT_SKILLS);
-                    HashSet<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
+                    HashSet<Skill> setOfSkillsThisDeveloper = createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = utilsController.createAccount(Long.parseLong(utilsController.inputData()));
+                    Account account = createAccount(Long.parseLong(utilsController.inputData()));
 
                     developerRepository.create(new Developer(id, name, setOfSkillsThisDeveloper, account));
 
@@ -73,10 +75,10 @@ public class DeveloperController {
                     String name = utilsController.inputData();
 
                     System.out.println(INPUT_SKILLS);
-                    HashSet<Skill> setOfSkillsThisDeveloper = utilsController.createSetOfSkill(utilsController.inputData());
+                    HashSet<Skill> setOfSkillsThisDeveloper = createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = utilsController.createAccount(Long.parseLong(utilsController.inputData()));
+                    Account account = createAccount(Long.parseLong(utilsController.inputData()));
 
                     developerRepository.update(new Developer(id, name, setOfSkillsThisDeveloper, account));
 
@@ -100,7 +102,7 @@ public class DeveloperController {
         return developerRepository.getAll();
     }
 
-    public Developer developerById (Long id){
+    public Developer developerById(Long id) {
         Developer developerById = null;
         for (Developer developers : listOfDevelopers) {
             if (developers.getId().equals(id)) {
@@ -109,6 +111,31 @@ public class DeveloperController {
             }
         }
         return developerById;
+    }
+
+    public Account createAccount(Long id) {
+
+        Account account = null;
+        for (AccountStatus status : AccountStatus.values()) {
+            if (status.getId().equals(id)) {
+                account = new Account(status);
+            }
+        }
+        return account;
+    }
+
+    public HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
+        long[] numberOfSkill = Arrays.stream(lineOfSkills.split("\\s")).mapToLong(Long::parseLong).toArray();
+        ArrayList<Skill> allSkills = new SkillRepository().getAll();
+        HashSet<Skill> setOfSkills = new HashSet<>();
+        for (long i : numberOfSkill) {
+            for (Skill skills : allSkills) {
+                if (skills.getId().equals(i)) {
+                    setOfSkills.add(skills);
+                }
+            }
+        }
+        return setOfSkills;
     }
 
 }
