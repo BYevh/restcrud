@@ -1,9 +1,9 @@
 package view;
 
-public class UtilsView {
+class UtilsView {
 
 
-    public void showMenuSkillView() {
+    void showMenuSkillView() {
         final String MENU_ITEM_1 = "1. Show all skills.";
         final String MENU_ITEM_2 = "2. Add new skill.";
         final String MENU_ITEM_3 = "3. Exit.";
@@ -13,7 +13,7 @@ public class UtilsView {
         System.out.println(MENU_ITEM_3);
     }
 
-    public void showMenuDevelopers() {
+    void showMenuDevelopers() {
         final String MENU_ITEM_1 = "1. Show all developers.";
         final String MENU_ITEM_2 = "2. Show developer by ID";
         final String MENU_ITEM_3 = "3. Add new developer.";

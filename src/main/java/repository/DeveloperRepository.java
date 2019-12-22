@@ -13,6 +13,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
     private String fileName = "\\consolecrude\\src\\resources\\developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
+    @Override
     public Developer getById(Long id) throws IOException {
         ArrayList<Developer> developers = getAll();
         for (Developer developer : developers) {
@@ -22,6 +23,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return null;
     }
 
+    @Override
     public ArrayList<Developer> getAll() throws IOException {
         ArrayList<Developer> developers = new ArrayList<>();
         ArrayList<String> stringOfDevelopers = utilsRepository.readAllFile();
@@ -31,6 +33,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return developers;
     }
 
+    @Override
     public List<Developer> create(Developer newDeveloper) throws IOException {
         ArrayList<Developer> developers = getAll();
         developers.add(newDeveloper);
@@ -43,6 +46,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return getAll();
     }
 
+    @Override
     public void delete(Long id) throws IOException {
         ArrayList<Developer> developers = getAll();
         Developer developerForDelete = null;
@@ -59,6 +63,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         utilsRepository.writeAllFile(stringsOfDevelopers);
     }
 
+    @Override
     public List<Developer> update(Developer developer) {
         return null;
     }
@@ -100,7 +105,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return String.join(" ", id, name, joinedSkills, account);
     }
 
-    public Account createAccount(Long id) {
+    private Account createAccount(Long id) {
 
         Account account = null;
         for (AccountStatus status : AccountStatus.values()) {
@@ -111,7 +116,7 @@ public class DeveloperRepository implements GenericRepository<Developer> {
         return account;
     }
 
-    public HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
+    private HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
         long[] numberOfSkill = Arrays.stream(lineOfSkills.split("\\s")).mapToLong(Long::parseLong).toArray();
         ArrayList<Skill> allSkills = new SkillRepository().getAll();
         HashSet<Skill> setOfSkills = new HashSet<>();

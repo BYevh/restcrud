@@ -102,7 +102,7 @@ public class DeveloperController {
         return developerRepository.getAll();
     }
 
-    public Developer developerById(Long id) {
+    private Developer developerById(Long id) {
         Developer developerById = null;
         for (Developer developers : listOfDevelopers) {
             if (developers.getId().equals(id)) {
@@ -113,7 +113,7 @@ public class DeveloperController {
         return developerById;
     }
 
-    public Account createAccount(Long id) {
+    private Account createAccount(Long id) {
 
         Account account = null;
         for (AccountStatus status : AccountStatus.values()) {
@@ -124,7 +124,7 @@ public class DeveloperController {
         return account;
     }
 
-    public HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
+    private HashSet<Skill> createSetOfSkill(String lineOfSkills) throws IOException {
         long[] numberOfSkill = Arrays.stream(lineOfSkills.split("\\s")).mapToLong(Long::parseLong).toArray();
         ArrayList<Skill> allSkills = new SkillRepository().getAll();
         HashSet<Skill> setOfSkills = new HashSet<>();
