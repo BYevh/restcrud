@@ -1,4 +1,4 @@
-package view;
+package ua.epam.crud.view;
 
 class UtilsView {
 

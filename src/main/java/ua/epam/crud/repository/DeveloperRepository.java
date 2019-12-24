@@ -1,10 +1,9 @@
-package repository;
+package ua.epam.crud.repository;
 
-import controller.UtilsController;
-import model.Account;
-import model.AccountStatus;
-import model.Developer;
-import model.Skill;
+import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
+import ua.epam.crud.model.Developer;
+import ua.epam.crud.model.Skill;
 
 import java.io.IOException;
 import java.util.*;

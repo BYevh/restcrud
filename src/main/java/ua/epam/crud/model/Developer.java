@@ -1,4 +1,4 @@
-package model;
+package ua.epam.crud.model;
 
 import java.util.HashSet;
 import java.util.Set;

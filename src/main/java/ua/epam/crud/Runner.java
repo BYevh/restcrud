@@ -1,8 +1,6 @@
-import model.Developer;
-import model.Skill;
-import repository.SkillRepository;
-import view.DeveloperView;
-import view.SkillView;
+package ua.epam.crud;
+
+import ua.epam.crud.view.DeveloperView;
 
 import java.io.IOException;
 

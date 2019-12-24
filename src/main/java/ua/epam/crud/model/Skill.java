@@ -1,4 +1,4 @@
-package model;
+package ua.epam.crud.model;
 
 public class Skill {
     private Long id;

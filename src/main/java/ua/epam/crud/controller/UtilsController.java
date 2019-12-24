@@ -1,4 +1,4 @@
-package controller;
+package ua.epam.crud.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;

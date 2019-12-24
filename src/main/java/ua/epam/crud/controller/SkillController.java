@@ -1,7 +1,7 @@
-package controller;
+package ua.epam.crud.controller;
 
-import model.Skill;
-import repository.SkillRepository;
+import ua.epam.crud.model.Skill;
+import ua.epam.crud.repository.SkillRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;

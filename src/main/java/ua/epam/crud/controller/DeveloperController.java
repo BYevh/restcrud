@@ -1,11 +1,11 @@
-package controller;
+package ua.epam.crud.controller;
 
-import model.Account;
-import model.AccountStatus;
-import model.Developer;
-import model.Skill;
-import repository.DeveloperRepository;
-import repository.SkillRepository;
+import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
+import ua.epam.crud.model.Developer;
+import ua.epam.crud.model.Skill;
+import ua.epam.crud.repository.DeveloperRepository;
+import ua.epam.crud.repository.SkillRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;

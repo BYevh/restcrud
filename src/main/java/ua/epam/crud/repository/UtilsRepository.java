@@ -1,6 +1,4 @@
-package repository;
-
-import model.Skill;
+package ua.epam.crud.repository;
 
 import java.io.*;
 import java.util.ArrayList;

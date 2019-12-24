@@ -1,6 +1,6 @@
-package view;
+package ua.epam.crud.view;
 
-import controller.SkillController;
+import ua.epam.crud.controller.SkillController;
 
 import java.io.IOException;
 

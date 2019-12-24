@@ -1,6 +1,6 @@
-package view;
+package ua.epam.crud.view;
 
-import controller.DeveloperController;
+import ua.epam.crud.controller.DeveloperController;
 
 import java.io.IOException;
 
