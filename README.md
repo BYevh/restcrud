@@ -1,35 +1,36 @@
-### You have to implement console CRUD application that has next entities:
-**ua.epam.crud.model.Developer
-ua.epam.crud.model.Skill
+**You have to implement console CRUD application that has next entities:**
+Developer
+Skill
 Account
-ua.epam.crud.model.AccountStatus **(enum ACTIVE, BANNED, DELETED)
+AccountStatus (enum ACTIVE, BANNED, DELETED)
 
-**ua.epam.crud.model.Developer** -> Set<ua.epam.crud.model.Skill> skills + Account account
-**Account** -> ua.epam.crud.model.AccountStatus
+Developer -> Set<Skill> skills + Account account
+Account -> AccountStatus
 
-Use text files as a storage:
-**developers.txt, skills.txt, accounts.txt**
-
+Use MySQL database as a storage.
 User should be able to create, read, update and delete data.
 
 
-Layers:
-**ua.epam.crud.model** - POJO classes
-**ua.epam.crud.repository** - classes that provide access to text files **ua.epam.crud.controller** - user’s requests handling
-**ua.epam.crud.view** - all data that are required for user/console interaction.
+**Layers:**
+model - POJO classes
+repository - classes that provide access to database
+service - classes with business logic
+controller - user’s requests handling
+view - all data that are required for user/console interaction.
 
-Example: **ua.epam.crud.model.Developer, ua.epam.crud.repository.DeveloperRepository, ua.epam.crud.controller.DeveloperController, ua.epam.crud.view.DeveloperView** и т.д.
+Example: Developer, DeveloperRepository, DeveloperController, DeveloperView и т.д.
 
 
-Try to use basic interface for ua.epam.crud.repository layer:
-**interface GenericRepository<T,ID>**
+Try to use basic interface for repository layer:
+interface GenericRepository<T,ID>
 
-**interface ua.epam.crud.repository.DeveloperRepository extends GenericRepository<ua.epam.crud.model.Developer, Long>
+interface DeveloperRepository extends GenericRepository<Developer, Long>
 
-class JavaIODeveloperRepositoryImpl implements ua.epam.crud.repository.DeveloperRepository**
+class JdbcDeveloperRepositoryImpl implements DeveloperRepository
 
-As a result of this task you should create new github ua.epam.crud.repository with *README.md* file, that contains task and project description and start up instructions.
+As a result of this task you should create new github repository with README.md file, that contains task and project description and start up instructions.
 
 Basic functionality should be covered with unit tests.
+For tests use H2 in-memory database
 
-User travis (https://travis-ci.com/) to show project build status.**
+User travis (https://travis-ci.com/) to show project build status.
