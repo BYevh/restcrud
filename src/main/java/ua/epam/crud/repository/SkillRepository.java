@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillRepository implements GenericRepository<Skill> {
-    private String fileName = "\\consolecrude\\src\\resources\\skills.txt";
+    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\skills.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     @Override
