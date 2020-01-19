@@ -1,6 +1,7 @@
-package ua.epam.crud.repository;
+package ua.epam.crud.repository.io;
 
 import ua.epam.crud.model.Skill;
+import ua.epam.crud.repository.GenericRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
