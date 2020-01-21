@@ -9,8 +9,8 @@ import ua.epam.crud.repository.GenericRepository;
 import java.io.IOException;
 import java.util.*;
 
-public class DeveloperRepository implements GenericRepository<Developer> {
-    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\developers.txt";
+public class DeveloperRepository implements GenericRepository<Developer,Long> {
+    private String fileName = "\\src\\resources\\developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     @Override

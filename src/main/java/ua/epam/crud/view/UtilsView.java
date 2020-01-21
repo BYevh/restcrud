@@ -5,12 +5,16 @@ class UtilsView {
 
     void showMenuSkillView() {
         final String MENU_ITEM_1 = "1. Show all skills.";
-        final String MENU_ITEM_2 = "2. Add new skill.";
-        final String MENU_ITEM_3 = "3. Exit.";
+        final String MENU_ITEM_2 = "2. Show skills by id.";
+        final String MENU_ITEM_3 = "3. Add new skill.";
+        final String MENU_ITEM_4 = "4. Delete skill.";
+        final String MENU_ITEM_5 = "5. Exit.";
 
         System.out.println(MENU_ITEM_1);
         System.out.println(MENU_ITEM_2);
         System.out.println(MENU_ITEM_3);
+        System.out.println(MENU_ITEM_4);
+        System.out.println(MENU_ITEM_5);
     }
 
     void showMenuDevelopers() {

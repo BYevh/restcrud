@@ -1,15 +1,14 @@
 package ua.epam.crud.repository.jdbc;
 
 import ua.epam.crud.model.Skill;
+import ua.epam.crud.repository.SkillRepository;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class JdbcSkillRepository implements SkillRepository {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/crud";
+    private static final String URL = "jdbc:mysql://localhost:3306/crud?serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
@@ -27,12 +26,8 @@ public class JdbcSkillRepository implements SkillRepository {
     }
 
     @Override
-    public ArrayList<Skill> create(Object o) {
-        if (o == null) {
-            return null;
-        }
-        Skill skill = (Skill) o;
-        String sql = "INSERT INTO skills VALUE (" + skill.getId() + ", " + skill.getName() + ")";
+    public ArrayList<Skill> create(Skill skill) {
+        String sql = "INSERT INTO skills VALUE (" + skill.getId() + ", '" + skill.getName() + "')";
         writeToDB(sql);
         return getAll();
     }
@@ -44,11 +39,7 @@ public class JdbcSkillRepository implements SkillRepository {
     }
 
     @Override
-    public ArrayList<Skill> update(Object o) {
-        if (o == null) {
-            return null;
-        }
-        Skill skill = (Skill) o;
+    public ArrayList<Skill> update(Skill skill) {
         String sql = "UPDATE skills SET name_skill=" + skill.getName() + ", WHERE id=" + skill.getId();
         writeToDB(sql);
         return getAll();
@@ -57,25 +48,30 @@ public class JdbcSkillRepository implements SkillRepository {
 
     private ArrayList<Skill> readFromDB(String sql) {
         ArrayList<Skill> skills = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 skills.add(new Skill(resultSet.getLong("id"), resultSet.getString("name_skill")));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return skills;
     }
 
     private void writeToDB(String sql) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement()) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

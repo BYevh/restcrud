@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkillRepository implements GenericRepository<Skill> {
-    private String fileName = "C:\\Users\\Yevhen\\IdeaProjects\\consolecrude\\src\\resources\\skills.txt";
+public class SkillRepository implements GenericRepository<Skill, Long> {
+    private String fileName = "\\src\\resources\\skills.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
+
+
 
     @Override
     public Skill getById(Long id) throws IOException {

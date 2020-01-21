@@ -3,7 +3,7 @@ package ua.epam.crud.repository;
 import java.io.IOException;
 import java.util.List;
 
-public interface GenericRepository<T> {
+public interface GenericRepository<T, Long> {
     T getById(Long id) throws IOException;
 
     List<T> getAll() throws IOException;

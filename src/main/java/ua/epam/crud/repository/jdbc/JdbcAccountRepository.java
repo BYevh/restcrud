@@ -1,21 +1,24 @@
 package ua.epam.crud.repository.jdbc;
 
+import ua.epam.crud.model.Account;
+import ua.epam.crud.repository.AccountRepository;
+
 import java.io.IOException;
 import java.util.List;
 
-public class JdbcAccountRepository implements AccountRepository {
+public class JdbcAccountRepository implements AccountRepository <Account, Long>{
     @Override
-    public Object getById(Long id) throws IOException {
+    public Account getById(Long id) throws IOException {
         return null;
     }
 
     @Override
-    public List getAll() throws IOException {
+    public List<Account> getAll() throws IOException {
         return null;
     }
 
     @Override
-    public List create(Object o) throws IOException {
+    public List<Account> create(Account account) throws IOException {
         return null;
     }
 
@@ -25,7 +28,7 @@ public class JdbcAccountRepository implements AccountRepository {
     }
 
     @Override
-    public List update(Object o) {
+    public List<Account> update(Account account) {
         return null;
     }
 }
