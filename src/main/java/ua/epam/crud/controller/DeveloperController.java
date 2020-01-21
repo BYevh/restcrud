@@ -6,6 +6,8 @@ import ua.epam.crud.model.Developer;
 import ua.epam.crud.model.Skill;
 import ua.epam.crud.repository.io.DeveloperRepository;
 import ua.epam.crud.repository.io.SkillRepository;
+import ua.epam.crud.service.DeveloperService;
+import ua.epam.crud.service.SkillService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ public class DeveloperController {
     private final String DEVELOPER_CREATED = "Developer Created";
     private final String DEVELOPER_UPDATED = "Developer Updated";
 
-    private DeveloperRepository developerRepository = new DeveloperRepository();
-    private ArrayList<Developer> listOfDevelopers = developerRepository.getAll();
+    private DeveloperService developerService = new DeveloperService();
+    private ArrayList<Developer> listOfDevelopers = developerService.getAll();
     private UtilsController utilsController = new UtilsController();
 
     public DeveloperController() throws IOException {
@@ -57,9 +59,9 @@ public class DeveloperController {
                     HashSet<Skill> setOfSkillsThisDeveloper = createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = createAccount(Long.parseLong(utilsController.inputData()));
+                    Account account = createAccount(id, Long.parseLong(utilsController.inputData()));
 
-                    developerRepository.create(new Developer(id, name, setOfSkillsThisDeveloper, account));
+                    developerService.create(new Developer(id, name, setOfSkillsThisDeveloper, account));
 
                     System.out.println(DEVELOPER_CREATED);
 
@@ -78,9 +80,9 @@ public class DeveloperController {
                     HashSet<Skill> setOfSkillsThisDeveloper = createSetOfSkill(utilsController.inputData());
 
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    Account account = createAccount(Long.parseLong(utilsController.inputData()));
+                    Account account = createAccount(id, Long.parseLong(utilsController.inputData()));
 
-                    developerRepository.update(new Developer(id, name, setOfSkillsThisDeveloper, account));
+                    developerService.update(new Developer(id, name, setOfSkillsThisDeveloper, account));
 
                     System.out.println(DEVELOPER_UPDATED);
 
@@ -89,7 +91,7 @@ public class DeveloperController {
 
                 case 5: {                                           //    5. Delete a developer.
                     System.out.println(INPUT_ID);
-                    developerRepository.delete(Long.parseLong(utilsController.inputData()));
+                    developerService.delete(Long.parseLong(utilsController.inputData()));
                     break;
                 }
 
@@ -99,7 +101,7 @@ public class DeveloperController {
             }
         } while (item != 6);
 
-        return developerRepository.getAll();
+        return developerService.getAll();
     }
 
     private Developer developerById(Long id) {
@@ -113,12 +115,12 @@ public class DeveloperController {
         return developerById;
     }
 
-    private Account createAccount(Long id) {
+    private Account createAccount(Long idDeveloper, Long idStatus) {
 
         Account account = null;
         for (AccountStatus status : AccountStatus.values()) {
-            if (status.getId().equals(id)) {
-                account = new Account(status);
+            if (status.getId().equals(idStatus)) {
+                account = new Account(idDeveloper,status);
             }
         }
         return account;

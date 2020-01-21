@@ -9,7 +9,7 @@ import ua.epam.crud.repository.GenericRepository;
 import java.io.IOException;
 import java.util.*;
 
-public class DeveloperRepository implements GenericRepository<Developer,Long> {
+public class DeveloperRepository implements GenericRepository<Developer, Long> {
     private String fileName = "\\src\\resources\\developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
@@ -83,7 +83,7 @@ public class DeveloperRepository implements GenericRepository<Developer,Long> {
         HashSet<Skill> setOfSkills = createSetOfSkill(joinedSkills);
         //
 
-        Account account = createAccount(Long.parseLong(arrayOfOwnDeveloper[arrayOfOwnDeveloper.length - 1]));
+        Account account = createAccount(id, Long.parseLong(arrayOfOwnDeveloper[arrayOfOwnDeveloper.length - 1]));
         return new Developer(id, name, setOfSkills, account);
     }
 
@@ -105,12 +105,11 @@ public class DeveloperRepository implements GenericRepository<Developer,Long> {
         return String.join(" ", id, name, joinedSkills, account);
     }
 
-    private Account createAccount(Long id) {
-
+    private Account createAccount(Long idDeveloper, Long id) {
         Account account = null;
         for (AccountStatus status : AccountStatus.values()) {
             if (status.getId().equals(id)) {
-                account = new Account(status);
+                account = new Account(idDeveloper, status);
             }
         }
         return account;

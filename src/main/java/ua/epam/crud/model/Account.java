@@ -1,16 +1,16 @@
 package ua.epam.crud.model;
 
 public class Account {
-    private int id;
+    private Long idDeveloper;
     private AccountStatus accountStatus;
 
-    public Account(int id, AccountStatus accountStatus) {
-        this.id = id;
+    public Account(Long idDeveloper, AccountStatus accountStatus) {
+        this.idDeveloper = idDeveloper;
         this.accountStatus = accountStatus;
     }
 
-    public int getId() {
-        return id;
+    public Long getIdDeveloper() {
+        return idDeveloper;
     }
 
     public AccountStatus getAccountStatus() {
@@ -19,5 +19,13 @@ public class Account {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "idDeveloper=" + idDeveloper +
+                ", accountStatus=" + accountStatus +
+                '}';
     }
 }

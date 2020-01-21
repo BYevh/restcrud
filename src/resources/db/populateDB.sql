@@ -21,7 +21,7 @@ VALUES (1, 1),
        (2, 1),
        (3, 1);
 
-INSERT INTO accounts (developer_id, status)
-VALUES (1, 'ACTIVE'),
-       (2, 'DELETE'),
-       (3, 'BANNED');
+INSERT INTO accounts (developer_id, id_status)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3);

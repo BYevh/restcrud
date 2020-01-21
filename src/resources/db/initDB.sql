@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS developers
 CREATE TABLE IF NOT EXISTS accounts
 (
     developer_id     INT NOT NULL,
-    status varchar(255),
-    UNIQUE (developer_id, status),
+    id_status INT NOT NULL,
+    UNIQUE (developer_id, id_status),
     FOREIGN KEY (developer_id) REFERENCES developers (id)
 );
 

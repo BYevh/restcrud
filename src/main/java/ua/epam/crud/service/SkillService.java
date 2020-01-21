@@ -5,9 +5,7 @@ import ua.epam.crud.repository.SkillRepository;
 import ua.epam.crud.repository.jdbc.JdbcSkillRepository;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SkillService {
     private SkillRepository skillRepository;

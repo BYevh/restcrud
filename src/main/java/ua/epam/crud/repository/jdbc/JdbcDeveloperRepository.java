@@ -1,12 +1,14 @@
 package ua.epam.crud.repository.jdbc;
 
 import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.model.Developer;
+import ua.epam.crud.model.Skill;
 import ua.epam.crud.repository.DeveloperRepository;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class JdbcDeveloperRepository implements DeveloperRepository {
@@ -22,13 +24,13 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     }
 
     @Override
-    public List<Developer> getAll() {
+    public ArrayList<Developer> getAll() {
         String sql = "SELECT * FROM developers";
         return readFromDB(sql);
     }
 
     @Override
-    public List<Developer> create(Developer developer) {
+    public ArrayList<Developer> create(Developer developer) {
         String sql = "INSERT INTO developers VALUE (" + developer.getId() + ", '" + developer.getName() + ", '" + developer.getAccount().getAccountStatus().getId() + "')";
         writeToDB(sql);
         return getAll();
@@ -38,6 +40,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     public void delete(Long id) {
         String sql = "DELETE FROM skills WHERE id=" + id;
         writeToDB(sql);
+        sql = "DELETE FROM accounts WHERE id=" + id;
+        writeToDB(sql);
         sql = "DELETE FROM developers WHERE id=" + id;
         writeToDB(sql);
 
@@ -45,8 +49,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public List<Developer> update(Developer developer) {
-        String sql = "UPDATE skills SET name=" + developer.getName() + ", " + +", WHERE id=" + developer.getId();
-        writeToDB(sql);
+//        String sql = "UPDATE skills SET name=" + developer.getName() + ", " + +", WHERE id=" + developer.getId();
+//        writeToDB(sql);
         return getAll();
     }
 
@@ -60,7 +64,14 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                developers.add(new Developer(resultSet.getLong("id"), resultSet.getString("name")));
+                long id = resultSet.getLong("id");
+                Account account = createAccountFromTableData(resultSet.getLong("id"));
+                HashSet<Skill> setOfSkill = createSetOfSkillsFromTableData(id);
+                developers.add(new Developer(
+                        id,
+                        resultSet.getString("name"),
+                        setOfSkill,
+                        account));
             }
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -68,6 +79,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         }
         return developers;
     }
+
 
     private void writeToDB(String sql) {
 
@@ -81,21 +93,57 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         }
     }
 
-    private Account createAccount(int id) {
-        String sql ="SELECT ALL FROM accounts WHERE developer_id=" + id;
+    private Account createAccountFromTableData(long idDeveloper) {
+        String sql = "SELECT * FROM accounts WHERE developer_id=" + idDeveloper;
+        int idStatus = 0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
+                idStatus = resultSet.getInt("id_status");
             }
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        Account account = null;
+        for (AccountStatus accountStatus : AccountStatus.values()) {
+            if (accountStatus.getId() == idStatus) {
+                account = new Account(idDeveloper, accountStatus);
+            }
+        }
+        return account;
     }
 
+    private HashSet<Skill> createSetOfSkillsFromTableData(long idDeveloper) {
+        String sql = "SELECT * FROM developer_skills WHERE developer_id=" + idDeveloper;
+        JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
+        ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
+        HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            long skillId;
+            while (resultSet.next()) {
+                skillId = resultSet.getLong("skill_id");
+                for (Skill skill : listOfAllSkills) {
+                    if (skill.getId().equals(skillId)) {
+                        listOfSkillsDeveloper.add(skill);
+                    }
+                }
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listOfSkillsDeveloper;
+    }
 
 
 }
