@@ -23,9 +23,8 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Account: " +
                 "idDeveloper=" + idDeveloper +
-                ", accountStatus=" + accountStatus +
-                '}';
+                ", accountStatus = " + accountStatus;
     }
 }

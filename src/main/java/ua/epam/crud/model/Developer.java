@@ -50,11 +50,8 @@ public class Developer {
 
      @Override
      public String toString() {
-          return "\nDeveloper{" +
-                  "id=" + id +
-                  ", \nname='" + name + '\'' +
-                  ", \nskill=" + skills.toString() +
-                  ", \naccount=" + account +
-                  '}';
+          return "\n\nDeveloper: id=" + id +"; name: " + name +
+                  "\n" + skills +
+                  "\n" + account;
      }
 }

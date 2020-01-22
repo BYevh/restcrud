@@ -10,22 +10,22 @@ import java.util.List;
 
 public interface DeveloperRepository extends GenericRepository<Developer, Long> {
     @Override
-    default Developer getById(Long id) throws IOException {
+    default Developer getById(Long id)  {
         return null;
     }
 
     @Override
-    default ArrayList<Developer> getAll() throws IOException {
+    default ArrayList<Developer> getAll() {
         return null;
     }
 
     @Override
-    default ArrayList<Developer> create(Developer developer) throws IOException {
+    default ArrayList<Developer> create(Developer developer) {
         return null;
     }
 
     @Override
-    default void delete(Long id) throws IOException {
+    default void delete(Long id) {
 
     }
 

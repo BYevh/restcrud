@@ -19,15 +19,15 @@ public class DeveloperService {
         return developerRepository.getById(id);
     }
 
-    public ArrayList<Developer> getAll() throws IOException {
+    public ArrayList<Developer> getAll() {
         return developerRepository.getAll();
     }
 
-    public List<Developer> create(Developer developer) throws IOException {
+    public List<Developer> create(Developer developer) {
         return developerRepository.create(developer);
     }
 
-    public void delete(Long id) throws IOException {
+    public void delete(Long id) {
         developerRepository.delete(id);
     }
 

@@ -27,9 +27,8 @@ public class Skill {
 
     @Override
     public String toString() {
-        return "\nSkill { " +
+        return "Skill : " +
                 "id=" + id +
-                ", name = '" + name + '\'' +
-                "}";
+                " - " + name;
     }
 }

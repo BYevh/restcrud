@@ -31,16 +31,25 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public ArrayList<Developer> create(Developer developer) {
-        String sql = "INSERT INTO developers VALUE (" + developer.getId() + ", '" + developer.getName() + ", '" + developer.getAccount().getAccountStatus().getId() + "')";
+        Long idDeveloper = developer.getId();
+        String nameDeveloper = developer.getName();
+        Long idStatus = developer.getAccount().getAccountStatus().getId();
+        String sql = "INSERT INTO developers VALUE (" + idDeveloper + ", '" + nameDeveloper + "')";
         writeToDB(sql);
+        sql = "INSERT INTO accounts VALUE (" + idDeveloper + ", " + idStatus + ")";
+        writeToDB(sql);
+        for (Skill skill : developer.getSkills()) {
+            sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
+            writeToDB(sql);
+        }
         return getAll();
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM skills WHERE id=" + id;
+        String sql = "DELETE FROM developer_skills WHERE developer_id=" + id;
         writeToDB(sql);
-        sql = "DELETE FROM accounts WHERE id=" + id;
+        sql = "DELETE FROM accounts WHERE developer_id=" + id;
         writeToDB(sql);
         sql = "DELETE FROM developers WHERE id=" + id;
         writeToDB(sql);
@@ -49,8 +58,19 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public List<Developer> update(Developer developer) {
-//        String sql = "UPDATE skills SET name=" + developer.getName() + ", " + +", WHERE id=" + developer.getId();
-//        writeToDB(sql);
+        Long idDeveloper = developer.getId();
+        String nameDeveloper = developer.getName();
+        Long idStatus = developer.getAccount().getAccountStatus().getId();
+        String sql = "UPDATE developers SET name='" + nameDeveloper +"' WHERE id=" + idDeveloper;
+        writeToDB(sql);
+        sql = "UPDATE accounts SET id_status=" + idStatus + " WHERE developer_id=" + idDeveloper;
+        writeToDB(sql);
+        sql = "DELETE FROM developer_skills WHERE developer_id=" + idDeveloper;
+        writeToDB(sql);
+        for (Skill skill : developer.getSkills()) {
+            sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
+            writeToDB(sql);
+        }
         return getAll();
     }
 
