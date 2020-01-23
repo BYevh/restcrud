@@ -17,12 +17,7 @@ public class DeveloperService {
     public static final Logger LOGGER = LoggerFactory.getLogger(DeveloperService.class);
 
     public DeveloperService() {
-        try {
             this.developerRepository = new JdbcDeveloperRepository();
-        } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
-        }
-
     }
 
     public Developer getById(Long id) {
@@ -30,7 +25,7 @@ public class DeveloperService {
         try {
             developer = developerRepository.getById(id);
         } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
+            LOGGER.info("Developer repository: getById" + e.getMessage());
         }
         return developer;
     }
@@ -40,7 +35,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.getAll();
         } catch (Exception e) {
-            LOGGER.error("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: getAll" + e.getMessage());
         }
         return developers;
     }
@@ -50,7 +45,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.create(developer);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: create" + e.getMessage());
         }
         return developers;
     }
@@ -59,7 +54,7 @@ public class DeveloperService {
         try {
             developerRepository.delete(id);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: delete" + e.getMessage());
         }
     }
 
@@ -68,7 +63,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.update(developer);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: update" + e.getMessage());
         }
 
         return developers;
