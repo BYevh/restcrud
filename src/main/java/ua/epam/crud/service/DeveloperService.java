@@ -40,7 +40,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.getAll();
         } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: " + e.getMessage());
         }
         return developers;
     }
@@ -50,7 +50,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.create(developer);
         } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: " + e.getMessage());
         }
         return developers;
     }
@@ -59,7 +59,7 @@ public class DeveloperService {
         try {
             developerRepository.delete(id);
         } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.update(developer);
         } catch (Exception e) {
-            LOGGER.info("Developer repository: " + e.getMessage());
+            LOGGER.error("Developer repository: " + e.getMessage());
         }
 
         return developers;
