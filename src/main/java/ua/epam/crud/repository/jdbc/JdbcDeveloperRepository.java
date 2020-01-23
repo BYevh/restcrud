@@ -56,7 +56,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     }
 
     @Override
-    public List<Developer> update(Developer developer) {
+    public ArrayList<Developer> update(Developer developer) {
         Long idDeveloper = developer.getId();
         String nameDeveloper = developer.getName();
         Long idStatus = developer.getAccount().getAccountStatus().getId();

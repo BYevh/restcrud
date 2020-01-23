@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static ua.epam.crud.repository.jdbc.JdbcUtils.*;
 
 public class JdbcAccountRepository implements AccountRepository {
-
+    JdbcUtils jdbcUtils = new JdbcUtils();
 
     @Override
     public Account getById(Long id) {
@@ -26,17 +26,22 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> create(Account account) {
-        return null;
+        String sql = "INSERT INTO accounts VALUE (" + account.getIdDeveloper() + ", " + account.getAccountStatus().getId() + ")";
+        jdbcUtils.writeToDB(sql);
+        return getAll();
     }
 
     @Override
     public void delete(Long id) {
-
+        String sql = "DELETE FROM accounts WHERE developer_id=" + id;
+        jdbcUtils.writeToDB(sql);
     }
 
     @Override
     public ArrayList<Account> update(Account account) {
-        return null;
+        String sql = "UPDATE accounts SET id_status=" + account.getAccountStatus().getId() + " WHERE developer_id=" + account.getIdDeveloper();
+        jdbcUtils.writeToDB(sql);
+        return getAll();
     }
 
 

@@ -30,7 +30,7 @@ public interface DeveloperRepository extends GenericRepository<Developer, Long> 
     }
 
     @Override
-    default List<Developer> update(Developer developer) {
+    default ArrayList<Developer> update(Developer developer) {
         return null;
     }
 }
