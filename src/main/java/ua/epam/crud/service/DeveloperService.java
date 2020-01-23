@@ -15,7 +15,7 @@ public class DeveloperService {
         this.developerRepository = new JdbcDeveloperRepository();
     }
 
-    public Developer getById(Long id) throws IOException {
+    public Developer getById(Long id)  {
         return developerRepository.getById(id);
     }
 

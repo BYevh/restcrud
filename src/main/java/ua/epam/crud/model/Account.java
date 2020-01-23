@@ -13,6 +13,10 @@ public class Account {
         return idDeveloper;
     }
 
+    public void setIdDeveloper(Long idDeveloper) {
+        this.idDeveloper = idDeveloper;
+    }
+
     public AccountStatus getAccountStatus() {
         return accountStatus;
     }

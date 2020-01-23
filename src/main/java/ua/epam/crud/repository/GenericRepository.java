@@ -12,5 +12,5 @@ public interface GenericRepository<T, Long> {
 
     void delete(Long id) throws IOException;
 
-    List<T> update(T t);
+    List<T> update(T t) throws IOException;
 }
