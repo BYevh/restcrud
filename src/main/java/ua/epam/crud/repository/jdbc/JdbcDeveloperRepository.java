@@ -1,7 +1,6 @@
 package ua.epam.crud.repository.jdbc;
 
 import ua.epam.crud.model.Account;
-import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.model.Developer;
 import ua.epam.crud.model.Skill;
 import ua.epam.crud.repository.DeveloperRepository;
@@ -11,11 +10,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static ua.epam.crud.repository.jdbc.JdbcUtils.*;
+
 public class JdbcDeveloperRepository implements DeveloperRepository {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/crud?serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private JdbcUtils jdbcUtils = new JdbcUtils();
 
     @Override
     public Developer getById(Long id) {
@@ -35,12 +34,12 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         String nameDeveloper = developer.getName();
         Long idStatus = developer.getAccount().getAccountStatus().getId();
         String sql = "INSERT INTO developers VALUE (" + idDeveloper + ", '" + nameDeveloper + "')";
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         sql = "INSERT INTO accounts VALUE (" + idDeveloper + ", " + idStatus + ")";
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         for (Skill skill : developer.getSkills()) {
             sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
-            writeToDB(sql);
+            jdbcUtils.writeToDB(sql);
         }
         return getAll();
     }
@@ -48,11 +47,11 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     @Override
     public void delete(Long id) {
         String sql = "DELETE FROM developer_skills WHERE developer_id=" + id;
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         sql = "DELETE FROM accounts WHERE developer_id=" + id;
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         sql = "DELETE FROM developers WHERE id=" + id;
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
 
     }
 
@@ -61,15 +60,15 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         Long idDeveloper = developer.getId();
         String nameDeveloper = developer.getName();
         Long idStatus = developer.getAccount().getAccountStatus().getId();
-        String sql = "UPDATE developers SET name='" + nameDeveloper +"' WHERE id=" + idDeveloper;
-        writeToDB(sql);
+        String sql = "UPDATE developers SET name='" + nameDeveloper + "' WHERE id=" + idDeveloper;
+        jdbcUtils.writeToDB(sql);
         sql = "UPDATE accounts SET id_status=" + idStatus + " WHERE developer_id=" + idDeveloper;
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         sql = "DELETE FROM developer_skills WHERE developer_id=" + idDeveloper;
-        writeToDB(sql);
+        jdbcUtils.writeToDB(sql);
         for (Skill skill : developer.getSkills()) {
             sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
-            writeToDB(sql);
+            jdbcUtils.writeToDB(sql);
         }
         return getAll();
     }
@@ -77,15 +76,14 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private ArrayList<Developer> readFromDB(String sql) {
         ArrayList<Developer> developers = new ArrayList<>();
-
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER);
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
-                Account account = createAccountFromTableData(resultSet.getLong("id"));
+                Account account = JdbcUtils.createAccountFromTableData(resultSet.getLong("id"));
                 HashSet<Skill> setOfSkill = createSetOfSkillsFromTableData(id);
                 developers.add(new Developer(
                         id,
@@ -101,51 +99,13 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     }
 
 
-    private void writeToDB(String sql) {
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Account createAccountFromTableData(long idDeveloper) {
-        String sql = "SELECT * FROM accounts WHERE developer_id=" + idDeveloper;
-        int idStatus = 0;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                idStatus = resultSet.getInt("id_status");
-            }
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Account account = null;
-        for (AccountStatus accountStatus : AccountStatus.values()) {
-            if (accountStatus.getId() == idStatus) {
-                account = new Account(idDeveloper, accountStatus);
-            }
-        }
-        return account;
-    }
-
     private HashSet<Skill> createSetOfSkillsFromTableData(long idDeveloper) {
         String sql = "SELECT * FROM developer_skills WHERE developer_id=" + idDeveloper;
         JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
         ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
         HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
-
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER);
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -158,7 +118,6 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
                     }
                 }
             }
-
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

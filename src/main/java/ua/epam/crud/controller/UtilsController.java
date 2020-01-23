@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class UtilsController {
 
-    String inputData() {
+    public String inputData() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String s = null;
         try {

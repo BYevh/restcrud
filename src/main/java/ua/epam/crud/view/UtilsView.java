@@ -32,4 +32,21 @@ class UtilsView {
         System.out.println(MENU_ITEM_5);
         System.out.println(MENU_ITEM_6);
     }
+
+    void showMenuAccounts() {
+        final String MENU_ITEM_1 = "1. Show all accounts.";
+        final String MENU_ITEM_2 = "2. Show account by ID";
+        final String MENU_ITEM_3 = "3. Add new account.";
+        final String MENU_ITEM_4 = "4. Update an account.";
+        final String MENU_ITEM_5 = "5. Delete an account.";
+        final String MENU_ITEM_6 = "6. Exit.";
+
+        System.out.println(MENU_ITEM_1);
+        System.out.println(MENU_ITEM_2);
+        System.out.println(MENU_ITEM_3);
+        System.out.println(MENU_ITEM_4);
+        System.out.println(MENU_ITEM_5);
+        System.out.println(MENU_ITEM_6);
+    }
+
 }
