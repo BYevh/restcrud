@@ -1,6 +1,7 @@
 package ua.epam.crud.controller;
 
 import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.model.Skill;
 import ua.epam.crud.service.AccountService;
 
@@ -17,7 +18,6 @@ public class AccountController {
     public AccountController() {
         this.accountService = new AccountService();
     }
-
 
 
     public ArrayList<Account> menuOfSkills() throws IOException {
@@ -39,12 +39,12 @@ public class AccountController {
                     break;
                 }
 
-                case 3: {                                           //3. Add new skill.
+                case 3: {                                           //3. Add new account.
                     System.out.println(INPUT_ID);
                     Long id = Long.parseLong(utilsController.inputData());
                     System.out.println(INPUT_ACCOUNT_STATUS);
-                    String skill = utilsController.inputData();
-                    listOfAccounts = accountService.create(new Skill (id, skill));
+                    Account newAccount = createAccount(id, Long.parseLong(utilsController.inputData()));
+                    listOfAccounts = accountService.create(newAccount);
                     System.out.println(listOfAccounts);
                     break;
                 }
@@ -63,4 +63,16 @@ public class AccountController {
         } while (item != 5);
 
         return listOfAccounts;
+    }
+
+    private Account createAccount(Long idDeveloper, Long idStatus) {
+
+        Account account = null;
+        for (AccountStatus status : AccountStatus.values()) {
+            if (status.getId().equals(idStatus)) {
+                account = new Account(idDeveloper,status);
+            }
+        }
+        return account;
+    }
 }

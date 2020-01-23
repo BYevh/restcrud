@@ -7,7 +7,6 @@ import ua.epam.crud.model.Skill;
 import ua.epam.crud.repository.jdbc.JdbcSkillRepository;
 import ua.epam.crud.service.DeveloperService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
