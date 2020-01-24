@@ -1,7 +1,9 @@
 package ua.epam.crud;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.epam.crud.controller.UtilsController;
-import ua.epam.crud.model.Account;
+import ua.epam.crud.service.DeveloperService;
 import ua.epam.crud.view.AccountView;
 import ua.epam.crud.view.DeveloperView;
 import ua.epam.crud.view.SkillView;
@@ -9,7 +11,12 @@ import ua.epam.crud.view.SkillView;
 import java.io.IOException;
 
 public class Runner {
+
+    public static final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
+
     public static void main(String[] args) throws IOException {
+
+        logger.info("logger started");
 
         UtilsController utilsController = new UtilsController();
         final String MENU_ITEM_1 = "1. Show menu Skills.";

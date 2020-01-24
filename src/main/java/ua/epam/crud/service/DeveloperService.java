@@ -1,20 +1,18 @@
 package ua.epam.crud.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.epam.crud.model.Developer;
 import ua.epam.crud.repository.DeveloperRepository;
 import ua.epam.crud.repository.jdbc.JdbcDeveloperRepository;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class DeveloperService {
     private DeveloperRepository developerRepository;
-    public static final Logger LOGGER = LoggerFactory.getLogger(DeveloperService.class);
+    public static final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
 
     public DeveloperService() {
             this.developerRepository = new JdbcDeveloperRepository();
@@ -22,10 +20,11 @@ public class DeveloperService {
 
     public Developer getById(Long id) {
         Developer developer = null;
+        logger.info("Developer repository: getById");
         try {
             developer = developerRepository.getById(id);
         } catch (Exception e) {
-            LOGGER.info("Developer repository: getById" + e.getMessage());
+            logger.error("Developer repository: getById" + e.getMessage());
         }
         return developer;
     }
@@ -35,7 +34,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.getAll();
         } catch (Exception e) {
-            LOGGER.error("Developer repository: getAll" + e.getMessage());
+            logger.error("Developer repository: getAll" + e.getMessage());
         }
         return developers;
     }
@@ -45,7 +44,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.create(developer);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: create" + e.getMessage());
+            logger.error("Developer repository: create" + e.getMessage());
         }
         return developers;
     }
@@ -54,7 +53,7 @@ public class DeveloperService {
         try {
             developerRepository.delete(id);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: delete" + e.getMessage());
+            logger.error("Developer repository: delete" + e.getMessage());
         }
     }
 
@@ -63,7 +62,7 @@ public class DeveloperService {
         try {
             developers = developerRepository.update(developer);
         } catch (Exception e) {
-            LOGGER.error("Developer repository: update" + e.getMessage());
+            logger.error("Developer repository: update" + e.getMessage());
         }
 
         return developers;
