@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AccountRepository implements GenericRepository<Account, Long> {
-    private String fileName = "\\src\\resources\\accounts.txt";
+    private String fileName = "src/resources/IOFiles/accounts.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     @Override

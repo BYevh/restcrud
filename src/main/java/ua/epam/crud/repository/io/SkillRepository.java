@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillRepository implements GenericRepository<Skill, Long> {
-    private String fileName = "\\src\\resources\\skills.txt";
+    private String fileName = "src/resources/IOFiles/skills.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class DeveloperRepository implements GenericRepository<Developer, Long> {
-    private String fileName = "\\src\\resources\\developers.txt";
+    private String fileName = "src/resources/IOFiles/developers.txt";
     private UtilsRepository utilsRepository = new UtilsRepository(fileName);
 
     @Override
