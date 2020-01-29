@@ -21,7 +21,7 @@ public class DeveloperServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 
         try {
@@ -33,8 +33,8 @@ public class DeveloperServlet extends HttpServlet {
             resp.setCharacterEncoding("UTF-8");
             writer.println(developerJsonString);
             writer.flush();
-            super.doGet(req, resp);
-        } catch (ServletException | IOException e) {
+
+        } catch (IOException e) {
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");

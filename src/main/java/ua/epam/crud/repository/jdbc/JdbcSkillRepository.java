@@ -6,8 +6,6 @@ import ua.epam.crud.repository.SkillRepository;
 import java.sql.*;
 import java.util.ArrayList;
 
-import static ua.epam.crud.repository.jdbc.JdbcUtils.*;
-
 public class JdbcSkillRepository implements SkillRepository {
 
     JdbcUtils jdbcUtils = new JdbcUtils();
@@ -49,15 +47,14 @@ public class JdbcSkillRepository implements SkillRepository {
         ArrayList<Skill> skills = new ArrayList<>();
 
         try {
-            Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = jdbcUtils.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 skills.add(new Skill(resultSet.getLong("id"), resultSet.getString("name_skill")));
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return skills;

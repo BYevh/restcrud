@@ -8,9 +8,6 @@ import ua.epam.crud.repository.DeveloperRepository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import static ua.epam.crud.repository.jdbc.JdbcUtils.*;
 
 public class JdbcDeveloperRepository implements DeveloperRepository {
 
@@ -77,13 +74,12 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     private ArrayList<Developer> readFromDB(String sql) {
         ArrayList<Developer> developers = new ArrayList<>();
         try {
-            Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = jdbcUtils.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
-                Account account = JdbcUtils.createAccountFromTableData(resultSet.getLong("id"));
+                Account account = jdbcUtils.createAccountFromTableData(resultSet.getLong("id"));
                 HashSet<Skill> setOfSkill = createSetOfSkillsFromTableData(id);
                 developers.add(new Developer(
                         id,
@@ -92,7 +88,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
                         account));
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return developers;
@@ -105,8 +101,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
         HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
         try {
-            Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Class.forName(jdbcUtils.DRIVER);
+            Connection connection = DriverManager.getConnection(jdbcUtils.URL, jdbcUtils.USER, jdbcUtils.PASSWORD);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             long skillId;

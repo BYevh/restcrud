@@ -1,13 +1,13 @@
 package ua.epam.crud.repository.jdbc;
 
 import ua.epam.crud.model.Account;
-import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.repository.AccountRepository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
-import static ua.epam.crud.repository.jdbc.JdbcUtils.*;
 
 public class JdbcAccountRepository implements AccountRepository {
     JdbcUtils jdbcUtils = new JdbcUtils();
@@ -45,21 +45,19 @@ public class JdbcAccountRepository implements AccountRepository {
     }
 
 
-
     private ArrayList<Account> readFromDB(String sql) {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
-            Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = jdbcUtils.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("developer_id");
-                accounts.add(JdbcUtils.createAccountFromTableData(id));
+                accounts.add(jdbcUtils.createAccountFromTableData(id));
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return accounts;
