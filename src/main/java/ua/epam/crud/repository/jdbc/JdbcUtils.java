@@ -7,10 +7,10 @@ import java.sql.*;
 
 public class JdbcUtils {
 
+    protected final String DRIVER = "com.mysql.cj.jdbc.Driver";
     protected final String URL = "jdbc:mysql://localhost:3306/crud?serverTimezone=UTC";
     protected final String USER = "root";
     protected final String PASSWORD = "root";
-    protected final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     protected void writeToDB(String sql) {
 
@@ -48,12 +48,13 @@ public class JdbcUtils {
     }
 
     protected Connection getConnection() {
+        Connection connection = null;
         try {
             Class.forName(DRIVER);
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return connection;
     }
 }
