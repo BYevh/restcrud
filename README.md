@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.com/BYevh/jdbccrud.svg?branch=master)](https://travis-ci.com/BYevh/jdbccrud)
+
 **You have to implement console CRUD application that has next entities:**
 Developer
 Skill
