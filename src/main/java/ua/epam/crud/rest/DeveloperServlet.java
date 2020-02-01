@@ -62,7 +62,7 @@ public class DeveloperServlet extends HttpServlet {
             String skill = req.getParameter("skill");
             String status = req.getParameter("status");
 
-            System.out.println(developer);
+
 
             writer.flush();
 
