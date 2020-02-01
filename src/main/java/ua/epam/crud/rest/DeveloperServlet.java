@@ -26,12 +26,19 @@ public class DeveloperServlet extends HttpServlet {
 
         try {
             ArrayList<Developer> developers = jdbcDeveloperRepository.getAll();
-            String developerJsonString = this.gson.toJson(developers);
-
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            writer.println(developerJsonString);
+            String id = req.getParameter("id");
+            if (id == null){
+                for(Developer developer:developers){
+                    writer.println(gson.toJson(developer));
+                }
+            } else {
+                Developer developerById = jdbcDeveloperRepository.getById(Long.parseLong(id));
+                writer.println(gson.toJson(developerById));
+            }
+
             writer.flush();
 
         } catch (IOException e) {
@@ -45,7 +52,27 @@ public class DeveloperServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        try {
+            ArrayList<Developer> developers = jdbcDeveloperRepository.getAll();
+            PrintWriter writer = resp.getWriter();
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            String id = req.getParameter("id");
+            String name = req.getParameter("name");
+            String skill = req.getParameter("skill");
+            String status = req.getParameter("status");
+
+            System.out.println(developer);
+
+            writer.flush();
+
+        } catch (IOException e) {
+            PrintWriter writer = resp.getWriter();
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.sendError(500);
+            writer.flush();
+        }
     }
 
     @Override
