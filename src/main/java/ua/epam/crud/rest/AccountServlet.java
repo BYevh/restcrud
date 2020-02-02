@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-@WebServlet(name = "SkillServlet", urlPatterns = "/api/v1/accounts")
+@WebServlet(name = "AccountServlet", urlPatterns = "/api/v1/accounts")
 public class AccountServlet extends HttpServlet {
 
     AccountService accountService = new AccountService();
