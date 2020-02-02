@@ -1,11 +1,7 @@
 package ua.epam.crud.rest;
 
 import com.google.gson.Gson;
-import ua.epam.crud.model.Account;
-import ua.epam.crud.model.Developer;
 import ua.epam.crud.model.Skill;
-import ua.epam.crud.service.AccountService;
-import ua.epam.crud.service.DeveloperService;
 import ua.epam.crud.service.SkillService;
 
 import javax.servlet.ServletException;
@@ -16,38 +12,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 
-@WebServlet(name = "DeveloperServlet", urlPatterns = "/api/v1/developers")
-public class DeveloperServlet extends HttpServlet {
+@WebServlet(name = "SkillServlet", urlPatterns = "/api/v1/skills")
+public class SkillServlet extends HttpServlet {
 
-    private DeveloperService developerService = new DeveloperService();
     private SkillService skillService = new SkillService();
-    private AccountService accountService = new AccountService();
     private Gson gson = new Gson();
 
-
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            ArrayList<Developer> developers = developerService.getAll();
+            ArrayList<Skill> skills = skillService.getAll();
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             String id = req.getParameter("id");
             if (id == null) {
-                for (Developer developer : developers) {
-                    writer.println(gson.toJson(developer));
+                for (Skill skill : skills) {
+                    writer.println(gson.toJson(skill));
                 }
             } else {
-                Developer developerById = developerService.getById(Long.parseLong(id));
-                writer.println(gson.toJson(developerById));
+                Skill skillById = skillService.getById(Long.parseLong(id));
+                writer.println(gson.toJson(skillById));
             }
-
             writer.flush();
-
         } catch (IOException e) {
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
@@ -63,9 +51,11 @@ public class DeveloperServlet extends HttpServlet {
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            developerService.create(getDeveloperFromRequest(req));
-            Developer developerById = developerService.getById(Long.parseLong(req.getParameter("id")));
-            writer.println(gson.toJson(developerById));
+            Long id = Long.parseLong(req.getParameter("id"));
+            String name = req.getParameter("name");
+            skillService.create(new Skill(id, name));
+            Skill skillById = skillService.getById(Long.parseLong(req.getParameter("id")));
+            writer.println(gson.toJson(skillById));
             writer.flush();
 
         } catch (IOException e) {
@@ -83,9 +73,11 @@ public class DeveloperServlet extends HttpServlet {
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            developerService.update(getDeveloperFromRequest(req));
-            Developer developerById = developerService.getById(Long.parseLong(req.getParameter("id")));
-            writer.println(gson.toJson(developerById));
+            Long id = Long.parseLong(req.getParameter("id"));
+            String name = req.getParameter("name");
+            skillService.update(new Skill(id, name));
+            Skill skillById = skillService.getById(Long.parseLong(req.getParameter("id")));
+            writer.println(gson.toJson(skillById));
             writer.flush();
 
         } catch (IOException e) {
@@ -100,13 +92,12 @@ public class DeveloperServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             Long id = Long.parseLong(req.getParameter("id"));
-            developerService.delete(id);
-            writer.println(gson.toJson(developerService.getAll()));
+            skillService.delete(id);
+            writer.println(gson.toJson(skillService.getAll()));
             writer.flush();
 
         } catch (IOException e) {
@@ -116,16 +107,5 @@ public class DeveloperServlet extends HttpServlet {
             resp.sendError(400);
             writer.flush();
         }
-
     }
-
-    private Developer getDeveloperFromRequest(HttpServletRequest req){
-        Long id = Long.parseLong(req.getParameter("id"));
-        String name = req.getParameter("name");
-        HashSet<Skill> skills = skillService.createSetOfSkills(String.join(" ", req.getParameterValues("skill")));
-        Long idStatus = Long.parseLong(req.getParameter("account"));
-        Account account = accountService.createAccount(id, idStatus);
-        return new Developer(id, name,skills, account);
-    }
-
 }

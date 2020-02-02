@@ -37,7 +37,7 @@ public class JdbcSkillRepository implements SkillRepository {
 
     @Override
     public ArrayList<Skill> update(Skill skill) {
-        String sql = "UPDATE skills SET name_skill=" + skill.getName() + ", WHERE id=" + skill.getId();
+        String sql = "UPDATE skills SET name_skill='" + skill.getName() + "' WHERE id=" + skill.getId();
         jdbcUtils.writeToDB(sql);
         return getAll();
     }
