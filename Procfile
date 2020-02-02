@@ -1,1 +1,1 @@
-web: sh target/bin/webapp
+web: java -jar target/consolecrude-1.0-SNAPSHOT.jar
