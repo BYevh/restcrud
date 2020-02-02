@@ -1,1 +1,1 @@
-web: java -cp target/classes/ua/epam/crud
+web: sh target/bin/webapp
