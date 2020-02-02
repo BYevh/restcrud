@@ -1,1 +1,1 @@
-web: java -cp target/classes/
+web: java -cp target/classes/ua/epam/crud
