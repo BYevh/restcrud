@@ -1,6 +1,7 @@
 package ua.epam.crud.service;
 
 import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.repository.AccountRepository;
 import ua.epam.crud.repository.jdbc.JdbcAccountRepository;
 
@@ -33,5 +34,15 @@ public class AccountService {
 
     public ArrayList<Account> update(Account account) {
         return accountRepository.update(account);
+    }
+
+    public Account createAccount(Long idDeveloper, Long idStatus) {
+        Account account = null;
+        for (AccountStatus status : AccountStatus.values()) {
+            if (status.getId().equals(idStatus)) {
+                account = new Account(idDeveloper,status);
+            }
+        }
+        return account;
     }
 }
