@@ -3,11 +3,11 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="12345" author="user">
+    <changeSet id="12345" author="yevhen">
         <sqlFile path="../db/initDB.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="user" author="12345">
+    <changeSet id="12346" author="yevhen">
         <sqlFile path="../db/populateDB.sql" relativeToChangelogFile="true"/>
     </changeSet>
 

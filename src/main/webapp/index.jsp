@@ -8,17 +8,19 @@
 
         <html lang="${param.lang}">
         <head>
-        <title>PhraseApp - i18n</title>
+                <meta charset="UTF-8">
+                <title><fmt:message key="message.title"/></title>
         </head>
         <body>
 
         <ul>
         <li><a href="?lang=en"><fmt:message key="label.lang.en" /></a></li>
-        <li><a href="?lang=gr"><fmt:message key="label.lang.de" /></a></li>
+        <li><a href="?lang=de"><fmt:message key="label.lang.de" /></a></li>
         </ul>
 
-        <h1>
-        <fmt:message key="welcome.message" />
-        </h1>
+
+                <fmt:message key="message.description"/><br>
+
+
         </body>
         </html>
