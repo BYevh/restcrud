@@ -16,11 +16,10 @@ public class JdbcUtils {
     protected void writeToDB(String sql) {
 
         try {
-            Class.forName(DRIVER);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

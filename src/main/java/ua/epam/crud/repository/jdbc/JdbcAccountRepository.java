@@ -1,27 +1,55 @@
 package ua.epam.crud.repository.jdbc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.epam.crud.model.Account;
 import ua.epam.crud.repository.AccountRepository;
+import ua.epam.crud.service.DeveloperService;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class JdbcAccountRepository implements AccountRepository {
     JdbcUtils jdbcUtils = new JdbcUtils();
+    public static final Logger logger = LoggerFactory.getLogger(JdbcAccountRepository.class);
+    private final String SELECT_BY_ID_QUERY = "SELECT * FROM accounts WHERE developer_id=?";
+    private final String SELECT_ALL_QUERY = "SELECT * FROM accounts";
+    private final String INSERT_QUERY = "INSERT INTO accounts VALUE ( ? , ?)";
+    private final String DELETE_QUERY = "DELETE FROM accounts WHERE developer_id=?";
+    private final String UPDATE_QUERY = "UPDATE accounts SET id_status=? WHERE developer_id=?";
+
 
     @Override
     public Account getById(Long id) {
-        String sql = "SELECT * FROM accounts WHERE developer_id = " + id;
-        return readFromDB(sql).get(0);
+        Connection connection = jdbcUtils.getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+            preparedStatement.setLong(1, id);
+        } catch (SQLException e) {
+            logger.debug("wrong sql query");
+        }
+        if (preparedStatement == null){
+            logger.error("preparedStatement = null");
+            return  new Account(null ,null);
+        }
+        return readFromDB(preparedStatement).get(0);
     }
 
     @Override
     public ArrayList<Account> getAll() {
-        String sql = "SELECT * FROM accounts";
-        return readFromDB(sql);
+        Connection connection = jdbcUtils.getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+        } catch (SQLException e) {
+            logger.debug("wrong sql query");
+        }
+        if (preparedStatement == null){
+            logger.error("preparedStatement = null");
+            return  new ArrayList<>();
+        }
+        return readFromDB(preparedStatement);
     }
 
     @Override
@@ -45,18 +73,14 @@ public class JdbcAccountRepository implements AccountRepository {
     }
 
 
-    private ArrayList<Account> readFromDB(String sql) {
+    private ArrayList<Account> readFromDB(PreparedStatement preparedStatement) {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
-            Connection connection = jdbcUtils.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("developer_id");
                 accounts.add(jdbcUtils.createAccountFromTableData(id));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
