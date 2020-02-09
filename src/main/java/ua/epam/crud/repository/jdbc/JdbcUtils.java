@@ -3,18 +3,22 @@ package ua.epam.crud.repository.jdbc;
 import ua.epam.crud.model.Account;
 import ua.epam.crud.model.AccountStatus;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class JdbcUtils {
 
+    Connection connection = null;
 
-    protected final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    protected final String URL = "jdbc:mysql://eu-cdbr-west-02.cleardb.net:3306/heroku_edfad8d16cd757d?reconnect=true";
-    protected final String USER = "b9661aea76cf5e";
-    protected final String PASSWORD = "34752ae2";
+    Properties properties = readPropertiesFile("./src/resources/application.properties");
+    protected final String DRIVER = properties.getProperty("database.driver");
+    protected final String URL = properties.getProperty("database.url");
+    protected final String USER = properties.getProperty("database.username");
+    protected final String PASSWORD = properties.getProperty("database.password");
 
     protected void writeToDB(String sql) {
-
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
@@ -34,7 +38,6 @@ public class JdbcUtils {
             while (resultSet.next()) {
                 idStatus = resultSet.getInt("id_status");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +51,6 @@ public class JdbcUtils {
     }
 
     protected Connection getConnection() {
-        Connection connection = null;
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -56,5 +58,16 @@ public class JdbcUtils {
             e.printStackTrace();
         }
         return connection;
+    }
+
+    private static Properties readPropertiesFile(String fileName) {
+        Properties prop = null;
+        try (FileInputStream fis = new FileInputStream(fileName)) {
+            prop = new Properties();
+            prop.load(fis);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return prop;
     }
 }

@@ -21,6 +21,8 @@
         <liquibase.version>3.6.3</liquibase.version>
         <jstl.version>1.2</jstl.version>
         <taglibs.version>1.1.2</taglibs.version>
+        <groovy-all.version>2.5.6</groovy-all.version>
+        <h2database.version>1.4.199</h2database.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
     </properties>
@@ -131,6 +133,21 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy-all.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2database.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
 
     </dependencies>
