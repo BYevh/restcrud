@@ -18,6 +18,7 @@
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <mysql.connector.version>8.0.18</mysql.connector.version>
         <slf4j.version>1.8.0-beta4</slf4j.version>
+        <slf4j-nop.version>1.8.0-beta4</slf4j-nop.version>
         <liquibase.version>3.6.3</liquibase.version>
         <jstl.version>1.2</jstl.version>
         <taglibs.version>1.1.2</taglibs.version>
@@ -106,6 +107,12 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>${slf4j-nop.version}</version>
         </dependency>
 
         <dependency>
