@@ -12,8 +12,14 @@ public class JdbcSkillRepository implements SkillRepository {
 
     @Override
     public Skill getById(Long id) {
+        Skill skillById = null;
         String sql = "SELECT * FROM skills WHERE id = " + id;
-        return readFromDB(sql).get(0);
+        try {
+            skillById = readFromDB(sql).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("id doesn't exist: " + e.getMessage());
+        }
+        return skillById;
     }
 
     @Override
@@ -46,8 +52,7 @@ public class JdbcSkillRepository implements SkillRepository {
     private ArrayList<Skill> readFromDB(String sql) {
         ArrayList<Skill> skills = new ArrayList<>();
 
-        try {
-            Connection connection = jdbcUtils.getConnection();
+        try (Connection connection = jdbcUtils.getConnection()){
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
@@ -56,6 +61,8 @@ public class JdbcSkillRepository implements SkillRepository {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IndexOutOfBoundsException e){
+            skills = null;
         }
         return skills;
     }

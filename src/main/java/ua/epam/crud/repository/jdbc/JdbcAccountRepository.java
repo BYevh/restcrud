@@ -3,12 +3,10 @@ package ua.epam.crud.repository.jdbc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.epam.crud.model.Account;
+import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.repository.AccountRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class JdbcAccountRepository implements AccountRepository {
@@ -27,24 +25,24 @@ public class JdbcAccountRepository implements AccountRepository {
     public Account getById(Long id) {
         PreparedStatement preparedStatement = null;
         Account accountById = null;
-        try (Connection connection = jdbcUtils.getConnection()){
+        try (Connection connection = jdbcUtils.getConnection()) {
             preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             accountById = readFromDB(preparedStatement).get(0);
         } catch (SQLException e) {
             logger.error("wrong sql query");
-        } catch (IndexOutOfBoundsException e){
-            accountById =null;
-            logger.error("wrong sql query");
+        } catch (IndexOutOfBoundsException e) {
+            accountById = null;
+            logger.info("Id doesn't exist: " + e.getMessage());
         }
         return accountById;
     }
 
     @Override
     public ArrayList<Account> getAll() {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         ArrayList<Account> listOfAccounts = new ArrayList<>();
-        try (Connection connection = jdbcUtils.getConnection()){
+        try (Connection connection = jdbcUtils.getConnection()) {
             preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
             listOfAccounts = readFromDB(preparedStatement);
         } catch (SQLException e) {
@@ -80,12 +78,33 @@ public class JdbcAccountRepository implements AccountRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("developer_id");
-                accounts.add(jdbcUtils.createAccountFromTableData(id));
+                accounts.add(createAccountFromTableData(id));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return accounts;
+    }
+
+    protected Account createAccountFromTableData(long idDeveloper) {
+        String sql = "SELECT * FROM accounts WHERE developer_id=" + idDeveloper;
+        int idStatus = 0;
+        try (Connection connection = jdbcUtils.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                idStatus = resultSet.getInt("id_status");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Account account = null;
+        for (AccountStatus accountStatus : AccountStatus.values()) {
+            if (accountStatus.getId() == idStatus) {
+                account = new Account(idDeveloper, accountStatus);
+            }
+        }
+        return account;
     }
 
 

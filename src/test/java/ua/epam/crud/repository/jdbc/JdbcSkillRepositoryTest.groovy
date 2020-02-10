@@ -1,27 +1,39 @@
 package ua.epam.crud.repository.jdbc
 
 import org.junit.Test
-import org.testng.Assert
-import ua.epam.crud.model.Account
-import ua.epam.crud.model.AccountStatus
+import org.junit.Assert
 import ua.epam.crud.model.Skill
-import ua.epam.crud.repository.AccountRepository
 import ua.epam.crud.repository.SkillRepository
 
 class JdbcSkillRepositoryTest {
 
+    SkillRepository skillRepository = new JdbcSkillRepository()
+
+
     @Test
     void testGetById() {
-        SkillRepository skillRepository = new JdbcSkillRepository()
-        Skill expected = new Skill(3,"C#");
-        Skill actual = skillRepository.getById(3L);
-        Assert.assertEquals(expected.getId(), actual.getId());
-        Assert.assertEquals(expected.getName(), actual.getName());
+        Skill expected = new Skill(10L,"Test")
+        skillRepository.create(expected)
+        Skill actual = skillRepository.getById(10L)
+        Assert.assertEquals(expected.getId(), actual.getId())
+        Assert.assertEquals(expected.getName(), actual.getName())
     }
 
+    @Test
     void testCreate() {
+        Skill expected = new Skill(10L,"Test")
+        skillRepository.create(expected)
+        Skill actual = skillRepository.getById(10L)
+        Assert.assertEquals(expected.getId(), actual.getId())
+        Assert.assertEquals(expected.getName(), actual.getName())
+        skillRepository.delete(10L)
     }
 
+    @Test
     void testDelete() {
+        skillRepository.create(new Skill(10L,"Test"))
+        skillRepository.delete(10L)
+        Skill actual = skillRepository.getById(10L)
+        Assert.assertNull(actual)
     }
 }

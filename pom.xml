@@ -23,6 +23,7 @@
         <taglibs.version>1.1.2</taglibs.version>
         <groovy-all.version>2.5.6</groovy-all.version>
         <h2database.version>1.4.199</h2database.version>
+        <apache.commons.version>2.7.0</apache.commons.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
     </properties>
@@ -148,6 +149,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${apache.commons.version}</version>
+        </dependency>
+
 
 
     </dependencies>
@@ -184,7 +191,7 @@
                     <programs>
                         <program>
                             <mainClass>ua.epam.crud.WebApplication</mainClass>
-                            <name>webapp</name>
+                            <id>webapp</id>
                         </program>
                     </programs>
                 </configuration>

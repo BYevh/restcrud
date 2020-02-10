@@ -12,11 +12,18 @@ import java.util.HashSet;
 public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private JdbcUtils jdbcUtils = new JdbcUtils();
+    private JdbcAccountRepository jdbcAccountRepository = new JdbcAccountRepository();
 
     @Override
     public Developer getById(Long id) {
+        Developer developerById = null;
         String sql = "SELECT * FROM developers WHERE id = " + id;
-        return readFromDB(sql).get(0);
+        try {
+            developerById = readFromDB(sql).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("id doesn't exist: " + e.getMessage());
+        }
+        return developerById;
     }
 
     @Override
@@ -73,13 +80,12 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private ArrayList<Developer> readFromDB(String sql) {
         ArrayList<Developer> developers = new ArrayList<>();
-        try {
-            Connection connection = jdbcUtils.getConnection();
+        try (Connection connection = jdbcUtils.getConnection()){
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
-                Account account = jdbcUtils.createAccountFromTableData(resultSet.getLong("id"));
+                Account account = jdbcAccountRepository.createAccountFromTableData(resultSet.getLong("id"));
                 HashSet<Skill> setOfSkill = createSetOfSkillsFromTableData(id);
                 developers.add(new Developer(
                         id,
@@ -100,9 +106,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
         ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
         HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
-        try {
-            Class.forName(jdbcUtils.DRIVER);
-            Connection connection = DriverManager.getConnection(jdbcUtils.URL, jdbcUtils.USER, jdbcUtils.PASSWORD);
+        try (Connection connection = jdbcUtils.getConnection()){
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             long skillId;
@@ -114,7 +118,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
                     }
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listOfSkillsDeveloper;

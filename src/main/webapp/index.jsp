@@ -18,8 +18,8 @@
         <li><a href="?lang=de"><fmt:message key="label.lang.de" /></a></li>
         </ul>
 
-
-                <fmt:message key="message.description"/><br>
+        <h2><fmt:message key="message.title"/></h2>
+        <fmt:message key="message.description"/>
 
 
         </body>
