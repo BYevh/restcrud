@@ -1,6 +1,7 @@
 .idea/*
 out/*
 target/*
+tomcat.8080/*
 
 *.class
 
