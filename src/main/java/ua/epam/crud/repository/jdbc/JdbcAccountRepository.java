@@ -23,6 +23,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public Account getById(Long id) {
+        logger.debug("get Account by id");
         PreparedStatement preparedStatement;
         Account accountById = null;
         try (Connection connection = jdbcUtils.getConnection()) {
@@ -40,6 +41,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> getAll() {
+        logger.debug("get all Accounts");
         PreparedStatement preparedStatement;
         ArrayList<Account> listOfAccounts = new ArrayList<>();
         try (Connection connection = jdbcUtils.getConnection()) {
@@ -53,26 +55,50 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> create(Account account) {
-        String sql = "INSERT INTO accounts VALUE (" + account.getIdDeveloper() + ", " + account.getAccountStatus().getId() + ")";
-        jdbcUtils.writeToDB(sql);
+        logger.debug("create Account");
+        PreparedStatement preparedStatement;
+        try (Connection connection = jdbcUtils.getConnection()) {
+            preparedStatement = connection.prepareStatement(INSERT_QUERY);
+            preparedStatement.setLong(1, account.getIdDeveloper());
+            preparedStatement.setLong(2, account.getAccountStatus().getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
         return getAll();
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM accounts WHERE developer_id=" + id;
-        jdbcUtils.writeToDB(sql);
+        logger.debug("delete Account by id");
+        PreparedStatement preparedStatement;
+        try (Connection connection = jdbcUtils.getConnection()) {
+            preparedStatement = connection.prepareStatement(DELETE_QUERY);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
     }
 
     @Override
     public ArrayList<Account> update(Account account) {
-        String sql = "UPDATE accounts SET id_status=" + account.getAccountStatus().getId() + " WHERE developer_id=" + account.getIdDeveloper();
-        jdbcUtils.writeToDB(sql);
+        logger.debug("update Account");
+        PreparedStatement preparedStatement;
+        try (Connection connection = jdbcUtils.getConnection()) {
+            preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+            preparedStatement.setLong(1, account.getAccountStatus().getId());
+            preparedStatement.setLong(2, account.getIdDeveloper());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
         return getAll();
     }
 
 
     private ArrayList<Account> readFromDB(PreparedStatement preparedStatement) {
+        logger.debug("read Accounts from DB");
         ArrayList<Account> accounts = new ArrayList<>();
         try {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -87,11 +113,13 @@ public class JdbcAccountRepository implements AccountRepository {
     }
 
     protected Account createAccountFromTableData(long idDeveloper) {
-        String sql = "SELECT * FROM accounts WHERE developer_id=" + idDeveloper;
+        logger.debug("create Account From Table Data");
+        PreparedStatement preparedStatement;
         int idStatus = 0;
         try (Connection connection = jdbcUtils.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+            preparedStatement.setLong(1, idDeveloper);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 idStatus = resultSet.getInt("id_status");
             }
