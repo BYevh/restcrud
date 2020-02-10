@@ -1,6 +1,8 @@
 package ua.epam.crud.repository.jdbc;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.Properties;
 public class JdbcUtils {
 
     private static BasicDataSource ds = new BasicDataSource();
+    public static final Logger logger = LoggerFactory.getLogger(JdbcUtils.class);
     private final static String PATH_TO_PROPERTIES = "./src/resources/application.properties";
 
     static {
@@ -30,6 +33,7 @@ public class JdbcUtils {
     }
 
     protected void writeToDB(String sql) {
+        logger.info("write to DB");
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -40,6 +44,7 @@ public class JdbcUtils {
 
 
     protected Connection getConnection() throws SQLException {
+        logger.info("get connection");
         return ds.getConnection();
     }
 

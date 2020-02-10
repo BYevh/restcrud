@@ -6,7 +6,10 @@ import ua.epam.crud.model.Account;
 import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.repository.AccountRepository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class JdbcAccountRepository implements AccountRepository {
@@ -23,11 +26,10 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public Account getById(Long id) {
-        logger.debug("get Account by id");
-        PreparedStatement preparedStatement;
+        logger.info("get Account by id");
         Account accountById = null;
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
             accountById = readFromDB(preparedStatement).get(0);
         } catch (SQLException e) {
@@ -41,11 +43,10 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> getAll() {
-        logger.debug("get all Accounts");
-        PreparedStatement preparedStatement;
+        logger.info("get all Accounts");
         ArrayList<Account> listOfAccounts = new ArrayList<>();
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             listOfAccounts = readFromDB(preparedStatement);
         } catch (SQLException e) {
             logger.error("wrong sql query");
@@ -55,10 +56,9 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> create(Account account) {
-        logger.debug("create Account");
-        PreparedStatement preparedStatement;
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(INSERT_QUERY);
+        logger.info("create Account");
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
             preparedStatement.setLong(1, account.getIdDeveloper());
             preparedStatement.setLong(2, account.getAccountStatus().getId());
             preparedStatement.executeUpdate();
@@ -70,10 +70,9 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public void delete(Long id) {
-        logger.debug("delete Account by id");
-        PreparedStatement preparedStatement;
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(DELETE_QUERY);
+        logger.info("delete Account by id");
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -83,10 +82,10 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public ArrayList<Account> update(Account account) {
-        logger.debug("update Account");
-        PreparedStatement preparedStatement;
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+        logger.info("update Account");
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(UPDATE_QUERY)) {
             preparedStatement.setLong(1, account.getAccountStatus().getId());
             preparedStatement.setLong(2, account.getIdDeveloper());
             preparedStatement.executeUpdate();
@@ -98,7 +97,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
 
     private ArrayList<Account> readFromDB(PreparedStatement preparedStatement) {
-        logger.debug("read Accounts from DB");
+        logger.info("read Accounts from DB");
         ArrayList<Account> accounts = new ArrayList<>();
         try {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -113,11 +112,10 @@ public class JdbcAccountRepository implements AccountRepository {
     }
 
     protected Account createAccountFromTableData(long idDeveloper) {
-        logger.debug("create Account From Table Data");
-        PreparedStatement preparedStatement;
+        logger.info("create Account From Table Data");
         int idStatus = 0;
-        try (Connection connection = jdbcUtils.getConnection()) {
-            preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
             preparedStatement.setLong(1, idDeveloper);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

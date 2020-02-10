@@ -1,5 +1,7 @@
 package ua.epam.crud.repository.jdbc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.epam.crud.model.Account;
 import ua.epam.crud.model.Developer;
 import ua.epam.crud.model.Skill;
@@ -12,24 +14,43 @@ import java.util.HashSet;
 public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private JdbcUtils jdbcUtils = new JdbcUtils();
+    private JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
     private JdbcAccountRepository jdbcAccountRepository = new JdbcAccountRepository();
+    public static final Logger logger = LoggerFactory.getLogger(JdbcDeveloperRepository.class);
+
+    private final String SELECT_BY_ID_QUERY = "SELECT * FROM developers WHERE id=?";
+    private final String SELECT_ALL_QUERY = "SELECT * FROM developers";
+    private final String INSERT_QUERY = "INSERT INTO developers VALUE ( ? , ?)";
+    private final String DELETE_QUERY = "DELETE FROM developers WHERE id=?";
+    private final String UPDATE_QUERY = "UPDATE developers SET name=? WHERE id=?";
 
     @Override
     public Developer getById(Long id) {
+        logger.info("get Account by id");
         Developer developerById = null;
-        String sql = "SELECT * FROM developers WHERE id = " + id;
-        try {
-            developerById = readFromDB(sql).get(0);
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+            preparedStatement.setLong(1, id);
+            developerById = readFromDB(preparedStatement).get(0);
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("id doesn't exist: " + e.getMessage());
+            logger.info("Id doesn't exist: " + e.getMessage());
         }
         return developerById;
     }
 
     @Override
     public ArrayList<Developer> getAll() {
-        String sql = "SELECT * FROM developers";
-        return readFromDB(sql);
+        logger.info("get all Accounts");
+        ArrayList<Developer> listOfDevelopers = new ArrayList<>();
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
+            listOfDevelopers = readFromDB(preparedStatement);
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
+        return listOfDevelopers;
     }
 
     @Override
@@ -50,6 +71,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public void delete(Long id) {
+
         String sql = "DELETE FROM developer_skills WHERE developer_id=" + id;
         jdbcUtils.writeToDB(sql);
         sql = "DELETE FROM accounts WHERE developer_id=" + id;
@@ -78,11 +100,11 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     }
 
 
-    private ArrayList<Developer> readFromDB(String sql) {
+    private ArrayList<Developer> readFromDB(PreparedStatement preparedStatement) {
+        logger.info("read Developer from DB");
         ArrayList<Developer> developers = new ArrayList<>();
-        try (Connection connection = jdbcUtils.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 Account account = jdbcAccountRepository.createAccountFromTableData(resultSet.getLong("id"));
@@ -93,7 +115,6 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
                         setOfSkill,
                         account));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
