@@ -80,7 +80,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private ArrayList<Developer> readFromDB(String sql) {
         ArrayList<Developer> developers = new ArrayList<>();
-        try (Connection connection = jdbcUtils.getConnection()){
+        try (Connection connection = jdbcUtils.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
@@ -106,7 +106,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
         ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
         HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
-        try (Connection connection = jdbcUtils.getConnection()){
+        try (Connection connection = jdbcUtils.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             long skillId;

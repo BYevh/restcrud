@@ -29,8 +29,6 @@ public class DeveloperServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-
         try {
             ArrayList<Developer> developers = developerService.getAll();
             PrintWriter writer = resp.getWriter();
@@ -98,9 +96,8 @@ public class DeveloperServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-
             PrintWriter writer = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
@@ -119,13 +116,13 @@ public class DeveloperServlet extends HttpServlet {
 
     }
 
-    private Developer getDeveloperFromRequest(HttpServletRequest req){
+    private Developer getDeveloperFromRequest(HttpServletRequest req) {
         Long id = Long.parseLong(req.getParameter("id"));
         String name = req.getParameter("name");
         HashSet<Skill> skills = skillService.createSetOfSkills(String.join(" ", req.getParameterValues("skill")));
         Long idStatus = Long.parseLong(req.getParameter("account"));
         Account account = accountService.createAccount(id, idStatus);
-        return new Developer(id, name,skills, account);
+        return new Developer(id, name, skills, account);
     }
 
 }

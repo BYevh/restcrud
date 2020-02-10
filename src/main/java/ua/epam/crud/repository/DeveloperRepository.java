@@ -2,15 +2,12 @@ package ua.epam.crud.repository;
 
 import ua.epam.crud.model.Developer;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public interface DeveloperRepository extends GenericRepository<Developer, Long> {
     @Override
-    default Developer getById(Long id)  {
+    default Developer getById(Long id) {
         return null;
     }
 

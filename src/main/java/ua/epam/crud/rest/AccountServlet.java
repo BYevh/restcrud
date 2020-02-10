@@ -2,7 +2,6 @@ package ua.epam.crud.rest;
 
 import com.google.gson.Gson;
 import ua.epam.crud.model.Account;
-import ua.epam.crud.model.Skill;
 import ua.epam.crud.service.AccountService;
 
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ public class AccountServlet extends HttpServlet {
     Gson gson = new Gson();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             ArrayList<Account> accounts = accountService.getAll();
             PrintWriter writer = resp.getWriter();

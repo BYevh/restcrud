@@ -2,12 +2,9 @@ package ua.epam.crud.repository;
 
 import ua.epam.crud.model.Account;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
-public interface AccountRepository extends GenericRepository <Account, Long> {
+public interface AccountRepository extends GenericRepository<Account, Long> {
 
     @Override
     default Account getById(Long id) {

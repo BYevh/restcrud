@@ -1,17 +1,19 @@
 package ua.epam.crud.repository.jdbc;
 
-import ua.epam.crud.model.Account;
-import ua.epam.crud.model.AccountStatus;
 import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class JdbcUtils {
 
     private static BasicDataSource ds = new BasicDataSource();
     private final static String PATH_TO_PROPERTIES = "./src/resources/application.properties";
+
     static {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(PATH_TO_PROPERTIES)) {
@@ -34,8 +36,6 @@ public class JdbcUtils {
             e.printStackTrace();
         }
     }
-
-
 
     protected Connection getConnection() throws SQLException {
         return ds.getConnection();

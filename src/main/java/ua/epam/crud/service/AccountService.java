@@ -5,9 +5,7 @@ import ua.epam.crud.model.AccountStatus;
 import ua.epam.crud.repository.AccountRepository;
 import ua.epam.crud.repository.jdbc.JdbcAccountRepository;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AccountService {
     private AccountRepository accountRepository;
@@ -40,7 +38,7 @@ public class AccountService {
         Account account = null;
         for (AccountStatus status : AccountStatus.values()) {
             if (status.getId().equals(idStatus)) {
-                account = new Account(idDeveloper,status);
+                account = new Account(idDeveloper, status);
             }
         }
         return account;

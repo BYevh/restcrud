@@ -23,7 +23,7 @@ public class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public Account getById(Long id) {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         Account accountById = null;
         try (Connection connection = jdbcUtils.getConnection()) {
             preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
@@ -89,7 +89,7 @@ public class JdbcAccountRepository implements AccountRepository {
     protected Account createAccountFromTableData(long idDeveloper) {
         String sql = "SELECT * FROM accounts WHERE developer_id=" + idDeveloper;
         int idStatus = 0;
-        try (Connection connection = jdbcUtils.getConnection()){
+        try (Connection connection = jdbcUtils.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

@@ -20,7 +20,7 @@ public class SkillServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             ArrayList<Skill> skills = skillService.getAll();
             PrintWriter writer = resp.getWriter();
