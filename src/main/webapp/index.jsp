@@ -23,6 +23,10 @@
                 <li><fmt:message key="developerEndPoint.message" /></li>
         </ul>
         <br>
+        <p><fmt:message key="diagramUML.message" /></p>
+        <p><img src="img/UMLDiagrammCrud.png" alt="uml diagram for project"></p>
+        <br>
+        <br>
         <p><fmt:message key="diagramS.message" /></p>
         <p><img src="img/sequenceJdbcDeveloperRepository.png" alt="sequence diagram for JdbcDeveloperRepository requests"></p>
         <br>
