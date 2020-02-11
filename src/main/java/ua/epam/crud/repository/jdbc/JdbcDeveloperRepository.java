@@ -15,11 +15,13 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private JdbcUtils jdbcUtils = new JdbcUtils();
     private JdbcAccountRepository jdbcAccountRepository = new JdbcAccountRepository();
+    private JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
     public static final Logger logger = LoggerFactory.getLogger(JdbcDeveloperRepository.class);
 
     private final String SELECT_BY_ID_QUERY = "SELECT * FROM developers WHERE id=?";
     private final String SELECT_ALL_QUERY = "SELECT * FROM developers";
-    private final String INSERT_QUERY = "INSERT INTO developers VALUE ( ? , ?)";
+    private final String INSERT_QUERY_DEVELOPER = "INSERT INTO developers VALUE ( ? , ?)";
+    private final String INSERT_QUERY_DEVELOPER_SKILLS = "INSERT INTO developer_skills VALUE ( ? , ?)";
     private final String DELETE_QUERY = "DELETE FROM developers WHERE id=?";
     private final String UPDATE_QUERY = "UPDATE developers SET name=? WHERE id=?";
 
@@ -54,16 +56,36 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public ArrayList<Developer> create(Developer developer) {
+        logger.info("create Developer");
         Long idDeveloper = developer.getId();
         String nameDeveloper = developer.getName();
-        Long idStatus = developer.getAccount().getAccountStatus().getId();
-        String sql = "INSERT INTO developers VALUE (" + idDeveloper + ", '" + nameDeveloper + "')";
-        jdbcUtils.writeToDB(sql);
-        sql = "INSERT INTO accounts VALUE (" + idDeveloper + ", " + idStatus + ")";
-        jdbcUtils.writeToDB(sql);
-        for (Skill skill : developer.getSkills()) {
-            sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
-            jdbcUtils.writeToDB(sql);
+        Account account = developer.getAccount();
+
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_QUERY_DEVELOPER)) {
+            preparedStatement.setLong(1, idDeveloper);
+            preparedStatement.setString(2, nameDeveloper);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
+
+        logger.info("create Account");
+        jdbcAccountRepository.create(account);
+
+        logger.info("create Skills");
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_QUERY_DEVELOPER_SKILLS)) {
+            for (Skill skill: developer.getSkills()) {
+                preparedStatement.setLong(1, skill.getId());
+                preparedStatement.setString(2, skill.getName());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
         }
         return getAll();
     }
