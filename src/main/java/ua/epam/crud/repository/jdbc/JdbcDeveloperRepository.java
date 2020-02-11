@@ -19,6 +19,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private final String SELECT_BY_ID_QUERY = "SELECT * FROM developers WHERE id=?";
     private final String SELECT_ALL_QUERY = "SELECT * FROM developers";
+    private final String SELECT_ALL_QUERY_DEVELOPER_SKILLS = "SELECT * FROM developer_skills WHERE developer_id=?";
     private final String INSERT_QUERY_DEVELOPER = "INSERT INTO developers VALUE ( ? , ?)";
     private final String INSERT_QUERY_DEVELOPER_SKILLS = "INSERT INTO developer_skills VALUE ( ? , ?)";
     private final String DELETE_QUERY_DEVELOPER = "DELETE FROM developers WHERE id=?";
@@ -30,7 +31,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         logger.info("get Account by id");
         Developer developerById = null;
         try (Connection connection = jdbcUtils.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(SELECT_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
             developerById = readFromDB(preparedStatement).get(0);
         } catch (SQLException e) {
@@ -46,7 +48,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         logger.info("get all Accounts");
         ArrayList<Developer> listOfDevelopers = new ArrayList<>();
         try (Connection connection = jdbcUtils.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(SELECT_ALL_QUERY)) {
             listOfDevelopers = readFromDB(preparedStatement);
         } catch (SQLException e) {
             logger.error("wrong sql query");
@@ -57,10 +60,17 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
     @Override
     public ArrayList<Developer> create(Developer developer) {
         logger.info("create Developer");
+        ArrayList<Developer> developers = getAll();
         Long idDeveloper = developer.getId();
         String nameDeveloper = developer.getName();
-        Account account = developer.getAccount();
 
+        Account account = developer.getAccount();
+        for (Developer developer1 : developers) {
+            if (idDeveloper.equals(developer1.getId())) {
+                System.out.println("developer is exist");
+                return developers;
+            }
+        }
         try (Connection connection = jdbcUtils.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement(INSERT_QUERY_DEVELOPER)) {
@@ -75,26 +85,16 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         jdbcAccountRepository.create(account);
 
         logger.info("create Skills");
-        try (Connection connection = jdbcUtils.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(INSERT_QUERY_DEVELOPER_SKILLS)) {
-            for (Skill skill : developer.getSkills()) {
-                preparedStatement.setLong(1, idDeveloper);
-                preparedStatement.setLong(2, skill.getId());
-                preparedStatement.addBatch();
-            }
-            preparedStatement.executeBatch();
-        } catch (SQLException e) {
-            logger.error("wrong sql query");
-        }
+        insertSkillsToDbDeveloperSkills(developer);
         return getAll();
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("delete Developer by id");
+        logger.info("delete Developer skills by id");
         try (Connection connection = jdbcUtils.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY_DEVELOPER_SKILLS)) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_QUERY_DEVELOPER_SKILLS)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -106,7 +106,8 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
         logger.info("delete Developer by id");
         try (Connection connection = jdbcUtils.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY_DEVELOPER)) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_QUERY_DEVELOPER)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -116,19 +117,36 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     @Override
     public ArrayList<Developer> update(Developer developer) {
+        logger.info("update Developer");
         Long idDeveloper = developer.getId();
         String nameDeveloper = developer.getName();
-        Long idStatus = developer.getAccount().getAccountStatus().getId();
-        String sql = "UPDATE developers SET name='" + nameDeveloper + "' WHERE id=" + idDeveloper;
-        jdbcUtils.writeToDB(sql);
-        sql = "UPDATE accounts SET id_status=" + idStatus + " WHERE developer_id=" + idDeveloper;
-        jdbcUtils.writeToDB(sql);
-        sql = "DELETE FROM developer_skills WHERE developer_id=" + idDeveloper;
-        jdbcUtils.writeToDB(sql);
-        for (Skill skill : developer.getSkills()) {
-            sql = "INSERT INTO developer_skills VALUE (" + idDeveloper + ", " + skill.getId() + ")";
-            jdbcUtils.writeToDB(sql);
+        Account account = developer.getAccount();
+
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(UPDATE_QUERY)) {
+            preparedStatement.setLong(1, idDeveloper);
+            preparedStatement.setString(2, nameDeveloper);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
         }
+
+        logger.info("update Account");
+        jdbcAccountRepository.update(account);
+
+
+        logger.info("delete Developer skills by id");
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_QUERY_DEVELOPER_SKILLS)) {
+            preparedStatement.setLong(1, idDeveloper);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
+        logger.info("update Skills");
+        insertSkillsToDbDeveloperSkills(developer);
         return getAll();
     }
 
@@ -141,7 +159,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 Account account = jdbcAccountRepository.createAccountFromTableData(resultSet.getLong("id"));
-                HashSet<Skill> setOfSkill = createSetOfSkillsFromTableData(id);
+                HashSet<Skill> setOfSkill = createSetOfSkillsFromDbDeveloperSkills(id);
                 developers.add(new Developer(
                         id,
                         resultSet.getString("name"),
@@ -154,15 +172,32 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
         return developers;
     }
 
+    private void insertSkillsToDbDeveloperSkills(Developer developer) {
+        Long idDeveloper = developer.getId();
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_QUERY_DEVELOPER_SKILLS)) {
+            for (Skill skill : developer.getSkills()) {
+                preparedStatement.setLong(1, idDeveloper);
+                preparedStatement.setLong(2, skill.getId());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.error("wrong sql query");
+        }
+    }
 
-    private HashSet<Skill> createSetOfSkillsFromTableData(long idDeveloper) {
-        String sql = "SELECT * FROM developer_skills WHERE developer_id=" + idDeveloper;
+
+    private HashSet<Skill> createSetOfSkillsFromDbDeveloperSkills(long idDeveloper) {
         JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
         ArrayList<Skill> listOfAllSkills = jdbcSkillRepository.getAll();
         HashSet<Skill> listOfSkillsDeveloper = new HashSet<>();
-        try (Connection connection = jdbcUtils.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+        try (Connection connection = jdbcUtils.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(SELECT_ALL_QUERY_DEVELOPER_SKILLS)) {
+            preparedStatement.setLong(1, idDeveloper);
+            ResultSet resultSet = preparedStatement.executeQuery();
             long skillId;
             while (resultSet.next()) {
                 skillId = resultSet.getLong("skill_id");
@@ -173,7 +208,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("wrong sql query");
         }
         return listOfSkillsDeveloper;
     }
