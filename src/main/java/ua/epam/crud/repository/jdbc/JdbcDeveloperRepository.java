@@ -14,7 +14,6 @@ import java.util.HashSet;
 public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private JdbcUtils jdbcUtils = new JdbcUtils();
-    private JdbcSkillRepository jdbcSkillRepository = new JdbcSkillRepository();
     private JdbcAccountRepository jdbcAccountRepository = new JdbcAccountRepository();
     public static final Logger logger = LoggerFactory.getLogger(JdbcDeveloperRepository.class);
 
