@@ -1,38 +1,35 @@
 [![Build Status](https://api.travis-ci.com/BYevh/jdbccrud.svg?branch=master)](https://travis-ci.com/BYevh/jdbccrud)
 
-**You have to implement console CRUD application that has next entities:**
-Developer
-Skill
-Account
-AccountStatus (enum ACTIVE, BANNED, DELETED)
 
-Developer -> Set<Skill> skills + Account account
-Account -> AccountStatus
+**DeveloperCRUD**
+This application allow to communicate with database via POST requests and provide CRUD interface.
 
-Use MySQL database as a storage.
-User should be able to create, read, update and delete data.
 
+It has next entities: *Developer, Skill, Account.*
+
+*Developer*: Long id; String Name; Set skills; Account account.\
+*Skill*: Long id; String name.\
+*Account*: Long id; AccountStatus (enum: ACTIVE, BANNED, DELETED) status.
 
 **Layers:**
-model - POJO classes
-repository - classes that provide access to database
-service - classes with business logic
-controller - user’s requests handling
-view - all data that are required for user/console interaction.
-
-Example: Developer, DeveloperRepository, DeveloperController, DeveloperView и т.д.
+model - POJO classes;
+repository - classes that provide access to database;
+service - classes with business logic;
+rest - user’s requests handling.
 
 
-Try to use basic interface for repository layer:
-interface GenericRepository<T,ID>
+It uses MySQL/hiroku database as a storage.
+User is able to create, read (get by ID or get all), update and delete data.
 
-interface DeveloperRepository extends GenericRepository<Developer, Long>
+Technology stack: Java, MySQL, H2 DB, JDBC, Servlets, Liquibase, JUnit, Mockito, Log4j, Tomcat.
 
-class JdbcDeveloperRepositoryImpl implements DeveloperRepository
+Also this api is deployed to Heroku cloud service.\
+https://restapiepam-developers.herokuapp.com
 
-As a result of this task you should create new github repository with README.md file, that contains task and project description and start up instructions.
+There are a few endpoints:
 
-Basic functionality should be covered with unit tests.
-For tests use H2 in-memory database
+api/v1/skills\
+api/v1/accounts\
+api/v1/developers
 
-User travis (https://travis-ci.com/) to show project build status.
+To show the build status of the project used Trevis
