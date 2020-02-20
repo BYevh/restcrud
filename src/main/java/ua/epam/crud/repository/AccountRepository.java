@@ -7,27 +7,17 @@ import java.util.ArrayList;
 public interface AccountRepository extends GenericRepository<Account, Long> {
 
     @Override
-    default Account getById(Long id) {
-        return null;
-    }
+    Account getById(Long id);
 
     @Override
-    default ArrayList<Account> getAll() {
-        return null;
-    }
+    ArrayList<Account> getAll();
 
     @Override
-    default ArrayList<Account> create(Account account) {
-        return null;
-    }
+    ArrayList<Account> create(Account account);
 
     @Override
-    default void delete(Long id) {
-
-    }
+    void delete(Long id);
 
     @Override
-    default ArrayList<Account> update(Account account) {
-        return null;
-    }
+    ArrayList<Account> update(Account account);
 }

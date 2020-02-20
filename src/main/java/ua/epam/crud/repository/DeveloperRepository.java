@@ -7,27 +7,17 @@ import java.util.ArrayList;
 
 public interface DeveloperRepository extends GenericRepository<Developer, Long> {
     @Override
-    default Developer getById(Long id) {
-        return null;
-    }
+    Developer getById(Long id);
 
     @Override
-    default ArrayList<Developer> getAll() {
-        return null;
-    }
+    ArrayList<Developer> getAll();
 
     @Override
-    default ArrayList<Developer> create(Developer developer) {
-        return null;
-    }
+    ArrayList<Developer> create(Developer developer);
 
     @Override
-    default void delete(Long id) {
-
-    }
+    void delete(Long id);
 
     @Override
-    default ArrayList<Developer> update(Developer developer) {
-        return null;
-    }
+    ArrayList<Developer> update(Developer developer);
 }
