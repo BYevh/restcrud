@@ -24,11 +24,18 @@
         </ul>
         <br>
         <p><fmt:message key="diagramUML.message" /></p>
-        <p><img src="img/UMLDiagrammCrud.png" alt="uml diagram for project"></p>
+        <style>
+                img {border: 2px solid #00a8e1;}
+        </style>
+        <a rel="nofollow" target="_blank" href="img/UMLDiagrammCrud.png">
+                <img width="800" height="600" src="img/UMLDiagrammCrud.png"/>
+        </a>
         <br>
         <br>
         <p><fmt:message key="diagramS.message" /></p>
-        <p><img src="img/sequenceJdbcDeveloperRepository.png" alt="sequence diagram for JdbcDeveloperRepository requests"></p>
+        <a rel="nofollow" target="_blank" href="img/sequenceJdbcDeveloperRepository.png">
+                <img width="640" height="480" src="img/sequenceJdbcDeveloperRepository.png"/>
+        </a>
         <br>
 
 </body>
