@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class JdbcSkillRepository implements SkillRepository {
 
     JdbcUtils jdbcUtils = new JdbcUtils();
-    public static final Logger logger = LoggerFactory.getLogger(JdbcSkillRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcSkillRepository.class);
     private final String SELECT_BY_ID_QUERY = "SELECT * FROM skills WHERE id=?";
     private final String SELECT_ALL_QUERY = "SELECT * FROM skills";
     private final String INSERT_QUERY = "INSERT INTO skills VALUE ( ? , ?)";

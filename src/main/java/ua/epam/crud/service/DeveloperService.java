@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class DeveloperService {
     private DeveloperRepository developerRepository;
-    public static final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeveloperService.class);
 
     public DeveloperService() {
         this.developerRepository = new JdbcDeveloperRepository();

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class JdbcAccountRepository implements AccountRepository {
 
     JdbcUtils jdbcUtils = new JdbcUtils();
-    public static final Logger logger = LoggerFactory.getLogger(JdbcAccountRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcAccountRepository.class);
 
     private final String SELECT_BY_ID_QUERY = "SELECT * FROM accounts WHERE developer_id=?";
     private final String SELECT_ALL_QUERY = "SELECT * FROM accounts";

@@ -15,7 +15,7 @@ public class JdbcDeveloperRepository implements DeveloperRepository {
 
     private JdbcUtils jdbcUtils = new JdbcUtils();
     private JdbcAccountRepository jdbcAccountRepository = new JdbcAccountRepository();
-    public static final Logger logger = LoggerFactory.getLogger(JdbcDeveloperRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcDeveloperRepository.class);
 
     private final String SELECT_BY_ID_QUERY = "SELECT * FROM developers WHERE id=?";
     private final String SELECT_ALL_QUERY = "SELECT * FROM developers";
